@@ -82,7 +82,7 @@ int main(void){
 	if(!glfwInit())
 		return -1;
 
-	window = glfwCreateWindow(640, 480, "ImGui + GLFW", NULL, NULL);
+	window = glfwCreateWindow(640, 480, "Ferx", NULL, NULL);
 	if(!window){
 		glfwTerminate();
 		return -1;
