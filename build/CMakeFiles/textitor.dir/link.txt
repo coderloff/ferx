@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/textitor.dir/src/Application.cpp.o -o textitor  /usr/lib/x86_64-linux-gnu/libOpenGL.so /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libGLU.so -lGLEW third_party/imgui/libimgui.a /usr/lib/x86_64-linux-gnu/libglfw.so.3.3 /usr/lib/x86_64-linux-gnu/libGLEW.so -lGLEW 

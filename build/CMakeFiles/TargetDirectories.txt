@@ -1,6 +1,0 @@
-/home/coderloff/Projects/textitor/build/CMakeFiles/textitor.dir
-/home/coderloff/Projects/textitor/build/CMakeFiles/edit_cache.dir
-/home/coderloff/Projects/textitor/build/CMakeFiles/rebuild_cache.dir
-/home/coderloff/Projects/textitor/build/third_party/imgui/CMakeFiles/imgui.dir
-/home/coderloff/Projects/textitor/build/third_party/imgui/CMakeFiles/edit_cache.dir
-/home/coderloff/Projects/textitor/build/third_party/imgui/CMakeFiles/rebuild_cache.dir
