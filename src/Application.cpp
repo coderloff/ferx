@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include "imgui.h"
@@ -90,9 +90,12 @@ int main(void){
 
 	glfwMakeContextCurrent(window);
 
-	if(glewInit() != GLEW_OK)
-		std::cout << "Error while initializing GLEW!\n";
-
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+	    std::cout << "Failed to initialize GLAD" << std::endl;
+	    return -1;
+	}
+	    
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
