@@ -7,13 +7,13 @@
 
 using std::string;
 
-string log;
+string log_message;
 bool show_demo_window = true;
 bool show_another_window = false;
 ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 void debug(string message){
-	log = message;
+	log_message = message;
 }
 
 bool open_main = true;
@@ -65,7 +65,7 @@ void show_console(){
 		debug("Debug message");
 	}
 
-	ImGui::Text(log.c_str());
+	ImGui::Text("%s", log_message.c_str());
 
 	ImGui::End();
 }
