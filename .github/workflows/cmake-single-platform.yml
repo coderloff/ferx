@@ -22,6 +22,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Install X11 & Wayland packages
+      run: sudo apt-get install -y xorg-dev libwayland-dev
+
     - name: Update submodules
     # Update all GitHub submodules (e.g glfw)
       run: git submodule update --init
