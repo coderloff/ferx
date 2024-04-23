@@ -1,10 +1,19 @@
 BUILD_DIR = build
 
-all: build
+RM += -r
 
-build:
-	cmake -S ./ -B $(BUILD_DIR)
-	cd $(BUILD_DIR) && make
-	
+all: debug
+
+release:
+	cmake -S . -B $(BUILD_DIR) -DCMAKE_BUILD_TYPE=Release
+	cmake --build $(BUILD_DIR) -j8
+
+debug:
+	cmake -S . -B $(BUILD_DIR) -DCMAKE_BUILD_TYPE=Debug
+	cmake --build $(BUILD_DIR) -j8
+
 clean:
-	rm -rf $(BUILD_DIR)
+	cmake --build $(BUILD_DIR) --target clean
+
+clean-all:
+	$(RM) $(BUILD_DIR)
