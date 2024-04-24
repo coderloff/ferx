@@ -6,6 +6,7 @@ set(EDITOR_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/editor/src)
 set(THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty)
 
 add_subdirectory(${THIRDPARTY_DIR}/glad)
+add_subdirectory(${THIRDPARTY_DIR}/glew/build/cmake)
 add_subdirectory(${THIRDPARTY_DIR}/glfw)
 add_subdirectory(${THIRDPARTY_DIR}/imgui)
 
