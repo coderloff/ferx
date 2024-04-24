@@ -6,6 +6,6 @@
 For building, type `make` and enter the directory `build`. After that, just type `./editor` to run the build
 
 ## 📦 Dependencies
-* **GLAD**
+* **GLEW**
 * **GLFW**
 * **ImGUI**
