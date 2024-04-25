@@ -1,15 +1,20 @@
 cmake_minimum_required(VERSION 3.22)
-project(ferx)
 set(CMAKE_CXX_STANDARD 17)
 
+# Declare project
+project(ferx)
+
+# Define variables of directory paths
 set(EDITOR_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/editor/src)
 set(EDITOR_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/editor/include)
 set(THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty)
 
+# Add thirdparty libraries
 add_subdirectory(${THIRDPARTY_DIR}/glad)
 add_subdirectory(${THIRDPARTY_DIR}/glfw)
 add_subdirectory(${THIRDPARTY_DIR}/imgui)
 
+# Define macros for the project sources
 file(GLOB_RECURSE EDITOR_SOURCES CONFIGURE_DEPENDS "${EDITOR_SOURCE_DIR}/*.cpp")
 add_executable(editor)
 
