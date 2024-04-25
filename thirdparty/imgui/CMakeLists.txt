@@ -15,5 +15,6 @@ target_sources(imgui PRIVATE
 )
 
 target_include_directories(imgui PUBLIC "${SRC_DIR}")
+target_include_directories(imgui PUBLIC "${SRC_DIR}/backends")
 
 target_link_libraries(imgui PUBLIC glfw glad)
