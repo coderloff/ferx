@@ -12,6 +12,7 @@ set(THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty)
 # Add thirdparty libraries
 add_subdirectory(${THIRDPARTY_DIR}/glad)
 add_subdirectory(${THIRDPARTY_DIR}/glfw)
+add_subdirectory(${THIRDPARTY_DIR}/glm)
 add_subdirectory(${THIRDPARTY_DIR}/imgui)
 
 # Define macros for the project sources
@@ -24,4 +25,4 @@ target_compile_definitions(editor PUBLIC RESOURCES_PATH="${CMAKE_CURRENT_SOURCE_
 target_sources(editor PRIVATE ${EDITOR_SOURCES} )
 target_include_directories(editor PRIVATE ${EDITOR_INCLUDE_DIR})
 
-target_link_libraries(editor PRIVATE glfw glad imgui)
+target_link_libraries(editor PRIVATE glfw glad glm imgui)
