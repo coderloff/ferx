@@ -5,20 +5,16 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
-using std::string;
-
-string log_message;
+std::string log_message;
 bool show_demo_window = true;
 bool show_another_window = false;
 ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-void debug(string message){
+void debug(std::string message){
 	log_message = message;
 }
 
-bool open_main = true;
-
-void show_main(){
+void show_menu(){
 	if(ImGui::BeginMainMenuBar()){
 		if(ImGui::BeginMenu("File")){
             if (ImGui::MenuItem("Open..", "Ctrl+O")) { /* Do stuff */ }
@@ -30,26 +26,16 @@ void show_main(){
 	}
 }
 
-void show_tools(){
-	static float f = 0.0f;
-	static int counter = 0;
+void show_hierarchy(){
+	ImGui::Begin("Hierarchy");
 
-	ImGui::Begin("Tools");                          // Create a window called "Hello, world!" and append into it.
+    ImGui::End();
+}
 
-	ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-	ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-	ImGui::Checkbox("Another Window", &show_another_window);
+void show_project(){
+	ImGui::Begin("Project");
 
-	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-	ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
-
-	if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-		counter++;
-	ImGui::SameLine();
-	ImGui::Text("counter = %d", counter);
-
-	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-    ImGui::End();	
+	ImGui::End();
 }
 
 void show_console(){
@@ -64,14 +50,37 @@ void show_console(){
 	if(ImGui::Button("Debug")){
 		debug("Debug message");
 	}
+	
+	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
 	ImGui::Text("%s", log_message.c_str());
 
 	ImGui::End();
 }
 
+void show_scene(){
+	ImGui::Begin("Scene");
+
+	ImGui::End();
+}
+
 void show_inspector(){
+	static float f = 0.0f;
+	static int counter = 0;
+
 	ImGui::Begin("Inspector");
+
+	ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+	ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
+	ImGui::Checkbox("Another Window", &show_another_window);
+
+	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+	ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+
+	if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+		counter++;
+	ImGui::SameLine();
+	ImGui::Text("counter = %d", counter);
 
 	ImGui::End();
 }
@@ -121,11 +130,17 @@ int main(void){
         //     ImGui::ShowDemoWindow(&show_demo_window);
 
         // 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
-		show_main();
+		show_menu();
         
-        show_tools();
+        show_hierarchy();
+
+        show_scene();
+
+		show_project();
 
 		show_console();
+
+		show_inspector();
 
         // 3. Show another simple window.
         if (show_another_window)
