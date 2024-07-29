@@ -4,6 +4,8 @@ Ferx is a basic game engine written in c++
 
 [![CMake on a single platform](https://github.com/coderloff/ferx/actions/workflows/cmake-single-platform.yml/badge.svg)](https://github.com/coderloff/ferx/actions/workflows/cmake-single-platform.yml)
 
+![Ferx](https://i.ibb.co/8j6Qh7B/Ferx.png)
+
 ## Build
 
 To clone repo:
@@ -31,11 +33,11 @@ Here is the list of each `make` command:
 
 ## Dependencies
 
-Required dependencies: git cmake make ninja
+Required dependencies: `git` `cmake` `make` `ninja`
 
 ## Libraries
 
 * **GLFW**
 * **GLAD**
 * **GLM**
-* **ImGUI*
+* **ImGUI**
