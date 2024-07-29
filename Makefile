@@ -1,4 +1,5 @@
 BUILD_DIR = build
+EDITOR_DIR = editor
 NAME = ferx
 
 RM += -r
@@ -14,7 +15,7 @@ debug:
 	cmake --build $(BUILD_DIR) -j8
 
 run:
-	cd $(BUILD_DIR) && ./${NAME}
+	cd $(BUILD_DIR)/${EDITOR_DIR} && ./${NAME}
 
 clean:
 	cmake --build $(BUILD_DIR) --target clean
