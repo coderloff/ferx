@@ -1,8 +1,9 @@
 BUILD_DIR = build
+NAME = ferx
 
 RM += -r
 
-all: debug
+all: debug run
 
 release:
 	cmake -S . -B $(BUILD_DIR) -G Ninja -DCMAKE_BUILD_TYPE=Release
@@ -11,6 +12,9 @@ release:
 debug:
 	cmake -S . -B $(BUILD_DIR) -G Ninja -DCMAKE_BUILD_TYPE=Debug
 	cmake --build $(BUILD_DIR) -j8
+
+run:
+	cd $(BUILD_DIR) && ./${NAME}
 
 clean:
 	cmake --build $(BUILD_DIR) --target clean

@@ -5,8 +5,8 @@ set(CMAKE_CXX_STANDARD 17)
 project(ferx)
 
 # Define variables of directory paths
-set(EDITOR_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/editor/src)
-set(EDITOR_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/editor/include)
+set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/editor/src)
+set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/editor/include)
 set(THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty)
 
 # Add thirdparty libraries
@@ -16,13 +16,13 @@ add_subdirectory(${THIRDPARTY_DIR}/glm)
 add_subdirectory(${THIRDPARTY_DIR}/imgui)
 
 # Define macros for the project sources
-file(GLOB_RECURSE EDITOR_SOURCES CONFIGURE_DEPENDS "${EDITOR_SOURCE_DIR}/*.cpp")
-add_executable(editor)
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "${SOURCE_DIR}/*.cpp")
+add_executable(${PROJECT_NAME})
 
-target_compile_definitions(editor PUBLIC RESOURCES_PATH="${CMAKE_CURRENT_SOURCE_DIR}/resources/") # This is useful to get an ASSETS_PATH in your IDE during development but you should comment this if you compile a release version and uncomment the next line
-#target_compile_definitions(editor PUBLIC RESOURCES_PATH="./resources/") # Uncomment this line to setup the ASSETS_PATH macro to the final assets directory when you share the game
+target_compile_definitions(${PROJECT_NAME} PUBLIC RESOURCES_PATH="${CMAKE_CURRENT_SOURCE_DIR}/resources/") # This is useful to get an ASSETS_PATH in your IDE during development but you should comment this if you compile a release version and uncomment the next line
+#target_compile_definitions(${PROJECT_NAME} PUBLIC RESOURCES_PATH="./resources/") # Uncomment this line to setup the ASSETS_PATH macro to the final assets directory when you share the game
 
-target_sources(editor PRIVATE ${EDITOR_SOURCES} )
-target_include_directories(editor PRIVATE ${EDITOR_INCLUDE_DIR})
+target_sources(${PROJECT_NAME} PRIVATE ${SOURCES} )
+target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_DIR})
 
-target_link_libraries(editor PRIVATE glfw glad glm imgui)
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw glad glm imgui)
