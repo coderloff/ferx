@@ -48,7 +48,7 @@ void Editor::InitializeWindow() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    window = glfwCreateWindow(1280, 720, "Editor", nullptr, nullptr);
+    window = glfwCreateWindow(screenWidth, screenHeight, "Editor", nullptr, nullptr);
     if (!window) {
         std::cerr << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
@@ -56,4 +56,5 @@ void Editor::InitializeWindow() {
     }
 
     glfwMakeContextCurrent(window);
+    glfwSetFramebufferSizeCallback(window, Engine::FramebufferSizeCallback);
 }

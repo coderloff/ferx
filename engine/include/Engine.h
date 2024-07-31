@@ -10,6 +10,8 @@ public:
     Engine();
     ~Engine();
 
+    static void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
+
     void Initialize(GLFWwindow* window);
     void Render();
     void Shutdown();

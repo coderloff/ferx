@@ -21,6 +21,9 @@ private:
     Engine engine;
     UI ui;
 
+    int screenWidth = 800;
+    int screenHeight = 600;
+
     void InitializeWindow();
     void InitializeImGui();
 };
