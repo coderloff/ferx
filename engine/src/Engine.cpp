@@ -1,30 +1,38 @@
 #include "Engine.h"
 
-Engine::Engine(){}
+Engine* Engine::s_Instance = nullptr;
+
+Engine::Engine()
+{
+    s_Instance = this;
+
+    m_Window = new Window();
+
+    Renderer::Init();
+    UI::Init(m_Window->GetWindow());
+}
 
 Engine::~Engine()
 {
     Shutdown();
 }
 
-void Engine::FramebufferSizeCallback(GLFWwindow* window, int width, int height)
+void Engine::Run()
 {
-    Graphics::FramebufferSizeCallback(window, width, height);
-}
-
-void Engine::Initialize(GLFWwindow* window)
-{
-    graphics.Initialize(window);
-}
-
-void Engine::Render()
-{
-    graphics.Render();
+    while (!glfwWindowShouldClose(m_Window->GetWindow())) {
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        UI::Run();
+        Renderer::Render();
+        UI::Render(*Renderer::s_Data.m_FBO);
+        glfwSwapBuffers(m_Window->GetWindow());
+        glfwPollEvents();
+    }
 }
 
 void Engine::Shutdown()
 {
-    graphics.Shutdown();
+    Renderer::Shutdown();
 }
 
 

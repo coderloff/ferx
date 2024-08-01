@@ -1,8 +1,11 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
+#define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
-#include "Graphics.h"
+#include "Renderer.h"
+#include "Window.h"
+#include "UI.h"
 
 class Engine
 {
@@ -10,14 +13,17 @@ public:
     Engine();
     ~Engine();
 
-    static void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
+    Window& GetWindow() const { return *m_Window; }
 
-    void Initialize(GLFWwindow* window);
+    static Engine& Get() { return *s_Instance; }
+
+    void Run();
     void Render();
     void Shutdown();
 
 private:
-    Graphics graphics;
+    Window* m_Window;
+    static Engine* s_Instance;
 };
 
 #endif

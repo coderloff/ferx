@@ -1,8 +1,8 @@
+#include <iostream>
 #include "Editor.h"
 
 int main(int argc, char** argv)
 {
-    Editor editor;
-
-    editor.Initialize();
+    Editor::Init();
+    std::cout << argv << std::endl;
 }

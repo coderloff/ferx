@@ -2,20 +2,28 @@
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 #include "UI.h"
+#include "FrameBuffer.h"
+#include "Window.h"
 
-UI::UI(): styleColors(nullptr){}
+static ImVec4 m_ClearColor;
+static ImVec4* m_StyleColors;
+static std::string m_Log;
 
-UI::~UI(){}
+UI::UI()= default;
 
-void UI::Initialize(GLFWwindow* window)
+UI::~UI()= default;
+
+void UI::Init(GLFWwindow* window)
 {
+    m_ClearColor = ImVec4(0.0f, 0.0f, 0.0f, 1.00f);
+
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
     ImGuiStyle& style = ImGui::GetStyle();
-    styleColors = style.Colors;
+    m_StyleColors = style.Colors;
     ImGui::StyleColorsDark();
 
     // Setup Platform/Renderer backends
@@ -29,17 +37,17 @@ void UI::Run()
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
     ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
-    styleColors[ImGuiCol_DockingEmptyBg] = clearColor;
+    m_StyleColors[ImGuiCol_DockingEmptyBg] = m_ClearColor;
 }
 
-void UI::Render()
+void UI::Render(const FrameBuffer& sceneBuffer)
 {
     ShowConsole();
     ShowHierarchy();
     ShowInspector();
     ShowMenu();
     ShowProject();
-    ShowScene();
+    ShowScene(sceneBuffer);
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -54,7 +62,7 @@ void UI::Shutdown()
 
 void UI::Print(const std::string& message)
 {
-    log = message;
+    m_Log = message;
 }
 
 void UI::ShowConsole(){
@@ -72,7 +80,7 @@ void UI::ShowConsole(){
 
     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
-    ImGui::Text("%s", log.c_str());
+    ImGui::Text("%s", m_Log.c_str());
 
     ImGui::End();
 }
@@ -94,7 +102,7 @@ void UI::ShowInspector()
     ImGui::Text("This is some useful text.");
 
     ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-    ImGui::ColorEdit3("clear color", (float*)&clearColor);
+    ImGui::ColorEdit3("clear color", (float*)&m_ClearColor);
 
     if (ImGui::Button("Button"))
         counter++;
@@ -124,10 +132,20 @@ void UI::ShowProject()
     ImGui::End();
 }
 
-void UI::ShowScene()
+void UI::ShowScene(const FrameBuffer& sceneBuffer)
 {
     ImGui::Begin("Scene");
+    {
+        ImGui::BeginChild("GameRender");
 
+        ImGui::Image(
+            (ImTextureID)sceneBuffer.GetFrameTexture(),
+            ImGui::GetContentRegionAvail(),
+            ImVec2(0, 1),
+            ImVec2(1, 0)
+        );
+    }
+    ImGui::EndChild();
     ImGui::End();
 }
 

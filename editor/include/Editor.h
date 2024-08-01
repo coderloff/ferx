@@ -1,6 +1,7 @@
 #ifndef EDITOR_H
 #define EDITOR_H
 
+#define GLFW_INCLUDE_NONE
 #include "Engine.h"
 #include "UI.h"
 
@@ -10,21 +11,11 @@ public:
     Editor();
     ~Editor();
 
-    void Initialize();
-    void Run();
-    void Shutdown();
-
-    GLFWwindow* GetWindow() const;
+    static void Init();
+    static void Run();
+    static void Shutdown();
 
 private:
-    GLFWwindow* window;
-    Engine engine;
-    UI ui;
-
-    int screenWidth = 800;
-    int screenHeight = 600;
-
-    void InitializeWindow();
     void InitializeImGui();
 };
 
