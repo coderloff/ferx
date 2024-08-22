@@ -8,6 +8,7 @@
 static ImVec4 m_ClearColor;
 static ImVec4* m_StyleColors;
 static std::string m_Log;
+InspectorData UI::s_Data;
 
 UI::UI()= default;
 
@@ -23,12 +24,22 @@ void UI::Init(GLFWwindow* window)
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
     ImGuiStyle& style = ImGui::GetStyle();
+    style.WindowBorderSize = 0;
+    style.WindowMenuButtonPosition = 1;
+    style.FrameRounding = 4;
+    style.GrabRounding = 4;
+    style.WindowRounding = 6;
     m_StyleColors = style.Colors;
     ImGui::StyleColorsDark();
 
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init();
+}
+
+InspectorData UI::GetData()
+{
+    return s_Data;
 }
 
 void UI::Run()
@@ -62,14 +73,14 @@ void UI::Shutdown()
 
 void UI::Print(const std::string& message)
 {
-    m_Log = message;
+    m_Log += message + '\n';
 }
 
 void UI::ShowConsole(){
     ImGui::Begin("Console");
 
     if(ImGui::Button("Clear")){
-        Print("");
+        m_Log.clear();
     }
 
     ImGui::SameLine();
@@ -89,25 +100,39 @@ void UI::ShowHierarchy()
 {
     ImGui::Begin("Hierarchy");
 
+    ImGui::CollapsingHeader("Triangle");
+
     ImGui::End();
 }
 
 void UI::ShowInspector()
 {
-    static float f = 0.0f;
-    static int counter = 0;
-
     ImGui::Begin("Inspector");
 
-    ImGui::Text("This is some useful text.");
+    ImGui::SeparatorText("Triangle");
 
-    ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-    ImGui::ColorEdit3("clear color", (float*)&m_ClearColor);
+    ImGui::BeginGroup();
+    {
+        ImGui::Text("Transform");
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+        ImGui::DragFloat3("Position", s_Data.m_Position, 0.2f);
+        ImGui::PopStyleColor();
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 1.0f, 0.0f, 1.0f));
+        ImGui::DragFloat3("Rotation", s_Data.m_Rotation, 0.4f);
+        ImGui::PopStyleColor();
+        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 1.0f, 1.0f));
+        ImGui::DragFloat3("Scale", s_Data.m_Scale, 0.1f);
+        ImGui::PopStyleColor();
+    }
+    ImGui::EndGroup();
 
-    if (ImGui::Button("Button"))
-        counter++;
-    ImGui::SameLine();
-    ImGui::Text("counter = %d", counter);
+    ImGui::NewLine();
+
+    ImGui::BeginGroup();
+    ImGui::Text("Colors");
+    ImGui::ColorEdit3("Shader Color", s_Data.m_Color);
+    ImGui::ColorEdit3("Clear Color", (float*)&m_ClearColor);
+    ImGui::EndGroup();
 
     ImGui::End();
 }
@@ -134,19 +159,22 @@ void UI::ShowProject()
 
 void UI::ShowScene(const FrameBuffer& sceneBuffer)
 {
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{0, 0});
     ImGui::Begin("Scene");
     {
         ImGui::BeginChild("GameRender");
 
         ImGui::Image(
-            (ImTextureID)sceneBuffer.GetFrameTexture(),
+            (ImTextureID)sceneBuffer.GetFrameTexture()->GetID(),
             ImGui::GetContentRegionAvail(),
             ImVec2(0, 1),
             ImVec2(1, 0)
         );
+
+        ImGui::EndChild();
     }
-    ImGui::EndChild();
     ImGui::End();
+    ImGui::PopStyleVar();
 }
 
 

@@ -15,6 +15,7 @@ add_subdirectory(${THIRDPARTY_DIR}/glad)
 add_subdirectory(${THIRDPARTY_DIR}/glfw)
 add_subdirectory(${THIRDPARTY_DIR}/glm)
 add_subdirectory(${THIRDPARTY_DIR}/imgui)
+add_subdirectory(${THIRDPARTY_DIR}/stb)
 
 # Add engine and editor
 add_subdirectory(engine)

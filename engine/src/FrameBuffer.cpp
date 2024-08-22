@@ -1,18 +1,17 @@
 #include "FrameBuffer.h"
 
-FrameBuffer::FrameBuffer() = default;
-
-FrameBuffer::FrameBuffer(int width, int height)
+FrameBuffer::FrameBuffer()
 {
 	glGenFramebuffers(1, &m_FBO);
 	glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
 
-	glGenTextures(1, &m_Texture);
-	glBindTexture(GL_TEXTURE_2D, m_Texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_Texture, 0);
+	m_Texture = new Texture();
+}
+
+void FrameBuffer::AttachTexture(int width, int height)
+{
+	Texture::ToImage(width, height, nullptr);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_Texture->GetID(), 0);
 
 	glGenRenderbuffers(1, &m_RBO);
 	glBindRenderbuffer(GL_RENDERBUFFER, m_RBO);
@@ -29,36 +28,34 @@ FrameBuffer::FrameBuffer(int width, int height)
 
 FrameBuffer::~FrameBuffer()
 {
-	glDeleteFramebuffers(1, &m_FBO);
-	glDeleteTextures(1, &m_Texture);
-	glDeleteRenderbuffers(1, &m_RBO);
+	Shutdown();
 }
 
-unsigned int FrameBuffer::GetFrameTexture() const
+Texture* FrameBuffer::GetFrameTexture() const
 {
 	return m_Texture;
 }
 
-FrameBuffer FrameBuffer::Create(int width, int height)
+FrameBuffer FrameBuffer::Create()
 {
-	return FrameBuffer{width, height};
+	return FrameBuffer{};
 }
 
 void FrameBuffer::Shutdown() const
 {
 	glDeleteBuffers(1, &m_FBO);
 	glDeleteBuffers(1, &m_RBO);
-	glDeleteTextures(1, &m_Texture);
+	m_Texture->Shutdown();
 }
-
 
 void FrameBuffer::RescaleFrameBuffer(int width, int height) const
 {
-	glBindTexture(GL_TEXTURE_2D, m_Texture);
+	m_Texture->Bind();
+
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_Texture, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_Texture->GetID(), 0);
 
 	glBindRenderbuffer(GL_RENDERBUFFER, m_RBO);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);

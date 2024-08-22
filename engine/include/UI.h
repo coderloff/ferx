@@ -7,6 +7,14 @@
 #include <imgui.h>
 #include <string>
 
+struct InspectorData
+{
+    float m_Position[3];
+    float m_Rotation[3];
+    float m_Scale[3];
+    float m_Color[3] = {1.0f, 1.0f, 1.0f};
+};
+
 class UI
 {
 public:
@@ -19,6 +27,7 @@ public:
     static void Shutdown();
 
     static void Print(const std::string& message);
+    static InspectorData GetData();
 
     static void ShowMenu();
     static void ShowHierarchy();
@@ -26,6 +35,9 @@ public:
     static void ShowConsole();
     static void ShowScene(const FrameBuffer& sceneBuffer);
     static void ShowInspector();
+
+private:
+    static InspectorData s_Data;
 };
 
 #endif

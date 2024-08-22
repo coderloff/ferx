@@ -22,9 +22,14 @@ void Renderer::Init()
     SetupBuffers();
 }
 
+RendererData Renderer::GetData()
+{
+    return s_Data;
+}
+
 void Renderer::LoadShaders()
 {
-    s_Data.m_Shader = new Shader(RESOURCES_PATH"shaders/shader.vs", RESOURCES_PATH"shaders/shader.fs");
+    s_Data.m_Shader = new Shader(RESOURCES_PATH"shaders/vertex.glsl", RESOURCES_PATH"shaders/fragment.glsl");
 }
 
 void Renderer::SetupBuffers()
@@ -35,7 +40,8 @@ void Renderer::SetupBuffers()
          0.0f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f
     };
 
-    s_Data.m_FBO = new FrameBuffer(FrameBuffer::Create(Engine::Get().GetWindow().GetWidth(), Engine::Get().GetWindow().GetHeight()));
+    s_Data.m_FBO = new FrameBuffer();
+    s_Data.m_FBO->AttachTexture(Engine::Get().GetWindow().GetWidth(), Engine::Get().GetWindow().GetHeight());
 
     s_Data.m_VAO = new VertexArray();
     s_Data.m_VBO = new VertexBuffer();
@@ -60,9 +66,19 @@ void Renderer::Render() {
     s_Data.m_FBO->Bind();
 
     s_Data.m_Shader->Use();
+    auto transform = glm::mat4(1.0f);
+    transform = glm::translate(transform, glm::vec3(UI::GetData().m_Position[0], UI::GetData().m_Position[1], UI::GetData().m_Position[2]));
+    s_Data.m_Shader->SetMat4("transform", transform);
+    glUniform3fv(glGetUniformLocation(s_Data.m_Shader->GetID(), "color"), 1, UI::GetData().m_Color);
     s_Data.m_VAO->Bind();
     glDrawArrays(GL_TRIANGLES, 0, 3);
     FrameBuffer::Unbind();
+}
+
+void Renderer::End()
+{
+    glfwSwapBuffers(Engine::Get().GetWindow().GetWindow());
+    glfwPollEvents();
 }
 
 void Renderer::Shutdown()

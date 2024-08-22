@@ -9,6 +9,7 @@
 #include "FrameBuffer.h"
 #include "Window.h"
 #include "Shader.h"
+#include "Texture.h"
 #include "UI.h"
 
 struct RendererData
@@ -17,6 +18,7 @@ struct RendererData
     VertexBuffer* m_VBO;
     FrameBuffer* m_FBO;
     Shader* m_Shader;
+    Texture* m_Texture;
 };
 
 class Renderer
@@ -27,11 +29,14 @@ public:
 
     static void Init();
     static void Render();
+    static void End();
     static void Shutdown();
 
-    static RendererData s_Data;
+    static RendererData GetData();
 
 private:
+    static RendererData s_Data;
+
     static void LoadShaders();
     static void SetupBuffers();
 };
