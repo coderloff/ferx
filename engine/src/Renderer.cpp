@@ -20,6 +20,15 @@ void Renderer::Init()
 
     LoadShaders();
     SetupBuffers();
+
+    glfwSetWindowSizeCallback(Engine::Get().GetWindow().GetWindow(), [](GLFWwindow* window, int width, int height)
+    {
+        SetupBuffers();
+    });
+    glfwSetFramebufferSizeCallback(Engine::Get().GetWindow().GetWindow(), [](GLFWwindow* window, int width, int height)
+    {
+        glViewport(0, 0, width, height);
+    });
 }
 
 RendererData Renderer::GetData()
@@ -41,7 +50,8 @@ void Renderer::SetupBuffers()
     };
 
     s_Data.m_FBO = new FrameBuffer();
-    s_Data.m_FBO->AttachTexture(Engine::Get().GetWindow().GetWidth(), Engine::Get().GetWindow().GetHeight());
+    WindowSize windowSize = Engine::Get().GetWindow().GetSize();
+    s_Data.m_FBO->AttachTexture(windowSize.Width, windowSize.Height);
 
     s_Data.m_VAO = new VertexArray();
     s_Data.m_VBO = new VertexBuffer();

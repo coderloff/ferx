@@ -29,7 +29,7 @@ void Window::Init()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    m_Window = glfwCreateWindow(m_Data.Width, m_Data.Height, m_Data.Title.c_str(), nullptr, nullptr);
+    m_Window = glfwCreateWindow(m_Data.Size.Width, m_Data.Size.Height, m_Data.Title.c_str(), nullptr, nullptr);
     if (!m_Window) {
         std::cerr << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
@@ -37,8 +37,6 @@ void Window::Init()
     }
 
     glfwMakeContextCurrent(m_Window);
-
-    glfwSetFramebufferSizeCallback(m_Window, FramebufferSizeCallback);
 }
 
 Window Window::Create()
@@ -51,11 +49,6 @@ Window Window::Create(const std::string& title, int width, int height)
     return Window{title, width, height};
 }
 
-void Window::FramebufferSizeCallback(GLFWwindow* window, int width, int height)
-{
-    glViewport(0, 0, width, height);
-}
-
 GLFWwindow* Window::GetWindow() const
 {
     return m_Window;
@@ -66,18 +59,13 @@ const std::string& Window::GetTitle() const
     return m_Data.Title;
 }
 
-int Window::GetWidth() const
+WindowSize Window::GetSize()
 {
-    return m_Data.Width;
+    glfwGetWindowSize(m_Window, &m_Data.Size.Width, &m_Data.Size.Height);
+    return m_Data.Size;
 }
 
-int Window::GetHeight() const
-{
-    return m_Data.Height;
-}
-
-
-void Window::Shutdown()
+void Window::Shutdown() const
 {
     glfwDestroyWindow(m_Window);
 }

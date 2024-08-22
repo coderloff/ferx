@@ -6,13 +6,21 @@
 #include <iostream>
 #include <Renderer.h>
 
+struct WindowSize
+{
+    int Width, Height;
+
+    WindowSize(): Width(0), Height(0){}
+    WindowSize(int width, int height): Width(width), Height(height){}
+};
+
 struct WindowData
 {
     std::string Title;
-    int Width, Height;
+    WindowSize Size;
 
-    WindowData(): Title("Ferx Engine"), Width(900), Height(600){}
-    WindowData(const std::string& title, int width, int height): Title(title), Width(width), Height(height){};
+    WindowData(): Title("Ferx Engine"), Size(900, 600){}
+    WindowData(const std::string& title, int width, int height): Title(title), Size(width, height){};
 };
 
 class Window
@@ -24,16 +32,14 @@ public:
 
     static Window Create();
     static Window Create(const std::string& title, int width, int height);
-    static void FramebufferSizeCallback(GLFWwindow* window, int width, int height);
 
     void Init();
 
     GLFWwindow* GetWindow() const;
     const std::string& GetTitle() const;
-    int GetWidth() const;
-    int GetHeight() const;
+    WindowSize GetSize();
 
-    void Shutdown();
+    void Shutdown() const;
 
 private:
     GLFWwindow* m_Window{};
