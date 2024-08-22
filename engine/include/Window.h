@@ -1,5 +1,4 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#pragma once
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -40,5 +39,3 @@ private:
     GLFWwindow* m_Window{};
     WindowData m_Data;
 };
-
-#endif

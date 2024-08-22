@@ -1,5 +1,4 @@
-#ifndef RENDERER_H
-#define RENDERER_H
+#pragma once
 
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
@@ -40,5 +39,3 @@ private:
     static void LoadShaders();
     static void SetupBuffers();
 };
-
-#endif

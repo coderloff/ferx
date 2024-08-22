@@ -1,5 +1,4 @@
-#ifndef EDITOR_H
-#define EDITOR_H
+#pragma once
 
 #define GLFW_INCLUDE_NONE
 #include "Engine.h"
@@ -18,5 +17,3 @@ public:
 private:
     void InitializeImGui();
 };
-
-#endif

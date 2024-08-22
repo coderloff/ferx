@@ -1,5 +1,4 @@
-#ifndef SHADER_H
-#define SHADER_H
+#pragma once
 
 #define GLFW_INCLUDE_NONE
 #include <glad/glad.h>
@@ -32,5 +31,3 @@ public:
 private:
     unsigned int m_ID;
 };
-
-#endif

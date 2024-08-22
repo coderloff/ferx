@@ -1,5 +1,4 @@
-#ifndef TEXTURE_H
-#define TEXTURE_H
+#pragma once
 
 #include <glad/glad.h>
 #include <stb_image.h>
@@ -31,5 +30,3 @@ private:
     unsigned char* m_Data{};
     int m_Width{}, m_Height{}, m_NrChannels{};
 };
-
-#endif

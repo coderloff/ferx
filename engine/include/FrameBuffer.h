@@ -1,5 +1,4 @@
-#ifndef FRAMEBUFFER_H
-#define FRAMEBUFFER_H
+#pragma once
 
 #include <glad/glad.h>
 #include <iostream>
@@ -26,5 +25,3 @@ private:
     unsigned int m_FBO{}, m_RBO{};
     Texture* m_Texture;
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef ENGINE_H
-#define ENGINE_H
+#pragma once
 
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
@@ -25,5 +24,3 @@ private:
     Window* m_Window;
     static Engine* s_Instance;
 };
-
-#endif

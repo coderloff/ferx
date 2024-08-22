@@ -1,5 +1,4 @@
-#ifndef UI_H
-#define UI_H
+#pragma once
 
 #define GLFW_INCLUDE_NONE
 #include "FrameBuffer.h"
@@ -39,5 +38,3 @@ public:
 private:
     static InspectorData s_Data;
 };
-
-#endif

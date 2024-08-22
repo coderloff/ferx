@@ -1,5 +1,4 @@
-#ifndef VERTEXARRAY_H
-#define VERTEXARRAY_H
+#pragma once
 
 #include <glad/glad.h>
 
@@ -18,5 +17,3 @@ public:
 private:
     unsigned int m_VAO{};
 };
-
-#endif

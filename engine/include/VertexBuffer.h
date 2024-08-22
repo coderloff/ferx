@@ -1,5 +1,4 @@
-#ifndef VERTEXBUFFER_H
-#define VERTEXBUFFER_H
+#pragma once
 
 #include <glad/glad.h>
 
@@ -19,5 +18,3 @@ public:
 private:
     unsigned int m_VBO{};
 };
-
-#endif
