@@ -9,6 +9,8 @@
 #include <sstream>
 #include <fstream>
 #include <iostream>
+#include <unordered_map>
+
 
 class Shader
 {
@@ -19,15 +21,11 @@ public:
 
     static Shader Create(const std::string& vPath, const std::string& fPath);
 
-    unsigned int GetID() const;
-
     void Use() const;
     void Shutdown() const;
-    void SetBool(const char* name, bool value) const;
-    void SetInt(const char* name, int value) const;
-    void SetFloat(const char* name, float value) const;
-    void SetMat4(const char* name, glm::mat4 value) const;
+    int GetUniformLocation(const std::string& name);
 
 private:
     unsigned int m_ID;
+    std::unordered_map<std::string, int> m_Uniforms{};
 };

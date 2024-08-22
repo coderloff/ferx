@@ -78,8 +78,8 @@ void Renderer::Render() {
     s_Data.m_Shader->Use();
     auto transform = glm::mat4(1.0f);
     transform = glm::translate(transform, glm::vec3(UI::GetData().m_Position[0], UI::GetData().m_Position[1], UI::GetData().m_Position[2]));
-    s_Data.m_Shader->SetMat4("transform", transform);
-    glUniform3fv(glGetUniformLocation(s_Data.m_Shader->GetID(), "color"), 1, UI::GetData().m_Color);
+    glUniformMatrix4fv(s_Data.m_Shader->GetUniformLocation("transform"), 1, GL_FALSE, glm::value_ptr(transform));
+    glUniform3fv(s_Data.m_Shader->GetUniformLocation("color"), 1, UI::GetData().m_Color);
     s_Data.m_VAO->Bind();
     glDrawArrays(GL_TRIANGLES, 0, 3);
     FrameBuffer::Unbind();
