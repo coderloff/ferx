@@ -10,7 +10,7 @@ Ferx is a basic game engine written in c++
 
 To clone repo:
 ```bash
-git clone https://github.com/coderloff/learnopengl
+git clone https://github.com/coderloff/ferx
 ```
 
 After clonning the repo, update the submodules:
