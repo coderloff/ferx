@@ -71,13 +71,13 @@ void Renderer::SetupBuffers()
 }
 
 void Renderer::Render() {
+    s_Data.m_FBO->Bind();
+
     glfwPollEvents();
     glClearColor(0.0f, 0.1f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     UI::Run();
-
-    s_Data.m_FBO->Bind();
 
     s_Data.m_Shader->Use();
     auto transform = glm::mat4(1.0f);
