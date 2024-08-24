@@ -28,7 +28,6 @@ public:
 
     static void Init();
     static void Render();
-    static void End();
     static void Shutdown();
 
     static RendererData GetData();

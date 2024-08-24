@@ -71,8 +71,12 @@ void Renderer::SetupBuffers()
 }
 
 void Renderer::Render() {
+    glfwPollEvents();
     glClearColor(0.0f, 0.1f, 0.2f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
+
+    UI::Run();
+
     s_Data.m_FBO->Bind();
 
     s_Data.m_Shader->Use();
@@ -83,12 +87,10 @@ void Renderer::Render() {
     s_Data.m_VAO->Bind();
     glDrawArrays(GL_TRIANGLES, 0, 3);
     FrameBuffer::Unbind();
-}
 
-void Renderer::End()
-{
+    UI::Render(*s_Data.m_FBO);
+
     glfwSwapBuffers(Engine::Get().GetWindow().GetWindow());
-    glfwPollEvents();
 }
 
 void Renderer::Shutdown()
@@ -97,4 +99,5 @@ void Renderer::Shutdown()
     s_Data.m_VBO->Shutdown();
     s_Data.m_FBO->Shutdown();
     s_Data.m_Shader->Shutdown();
+    s_Data.m_Texture->Shutdown();
 }

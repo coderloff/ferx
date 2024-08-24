@@ -20,10 +20,7 @@ Engine::~Engine()
 void Engine::Run()
 {
     while (!glfwWindowShouldClose(m_Window->GetWindow())) {
-        UI::Run();
         Renderer::Render();
-        UI::Render(*Renderer::GetData().m_FBO);
-        Renderer::End();
     }
 }
 
