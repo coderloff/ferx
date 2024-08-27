@@ -9,7 +9,6 @@ Engine::Engine()
     m_Window = new Window();
 
     Renderer::Init();
-    UI::Init(m_Window->GetWindow());
 }
 
 Engine::~Engine()

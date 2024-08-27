@@ -5,19 +5,22 @@
 #include <iostream>
 #include "VertexArray.h"
 #include "VertexBuffer.h"
+#include "IndexBuffer.h"
 #include "FrameBuffer.h"
 #include "Window.h"
 #include "Shader.h"
 #include "Texture.h"
 #include "UI.h"
+#include "Camera.h"
 
 struct RendererData
 {
     VertexArray* m_VAO;
     VertexBuffer* m_VBO;
+    IndexBuffer* m_IBO;
     FrameBuffer* m_FBO;
+    Camera* m_Camera;
     Shader* m_Shader;
-    Texture* m_Texture;
 };
 
 class Renderer
@@ -37,4 +40,13 @@ private:
 
     static void LoadShaders();
     static void SetupBuffers();
+    static void SetCallbacks();
+    static void ProcessInput(GLFWwindow* window);
+
+    static float deltaTime;
+    static float lastFrame;
+
+    static bool firstMouse;
+    static float lastX;
+    static float lastY;
 };

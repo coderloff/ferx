@@ -5,10 +5,9 @@
 #include "FrameBuffer.h"
 #include "Window.h"
 
-static ImVec4 m_ClearColor;
-static ImVec4* m_StyleColors;
-static std::string m_Log;
 InspectorData UI::s_Data;
+std::string UI::m_Log;
+ImVec4* UI::m_StyleColors;
 
 UI::UI()= default;
 
@@ -16,11 +15,10 @@ UI::~UI()= default;
 
 void UI::Init(GLFWwindow* window)
 {
-    m_ClearColor = ImVec4(0.0f, 0.0f, 0.0f, 1.00f);
-
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
     ImGuiStyle& style = ImGui::GetStyle();
@@ -48,7 +46,7 @@ void UI::Run()
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
     ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
-    m_StyleColors[ImGuiCol_DockingEmptyBg] = m_ClearColor;
+    m_StyleColors[ImGuiCol_DockingEmptyBg] = ImVec4(s_Data.m_BgColor.x, s_Data.m_BgColor.y, s_Data.m_BgColor.z, 1.0f);
 }
 
 void UI::Render(const FrameBuffer& sceneBuffer)
@@ -109,19 +107,19 @@ void UI::ShowInspector()
 {
     ImGui::Begin("Inspector");
 
-    ImGui::SeparatorText("Triangle");
+    ImGui::SeparatorText("Cube");
 
     ImGui::BeginGroup();
     {
         ImGui::Text("Transform");
         ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-        ImGui::DragFloat3("Position", s_Data.m_Position, 0.2f);
+        ImGui::DragFloat3("Position", glm::value_ptr(s_Data.m_Position), 0.2f);
         ImGui::PopStyleColor();
         ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 1.0f, 0.0f, 1.0f));
-        ImGui::DragFloat3("Rotation", s_Data.m_Rotation, 0.4f);
+        ImGui::DragFloat3("Rotation", glm::value_ptr(s_Data.m_Rotation), 0.4f);
         ImGui::PopStyleColor();
         ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 1.0f, 1.0f));
-        ImGui::DragFloat3("Scale", s_Data.m_Scale, 0.1f);
+        ImGui::DragFloat3("Scale", glm::value_ptr(s_Data.m_Scale), 0.1f);
         ImGui::PopStyleColor();
     }
     ImGui::EndGroup();
@@ -130,8 +128,8 @@ void UI::ShowInspector()
 
     ImGui::BeginGroup();
     ImGui::Text("Colors");
-    ImGui::ColorEdit3("Shader Color", s_Data.m_Color);
-    ImGui::ColorEdit3("Clear Color", (float*)&m_ClearColor);
+    ImGui::ColorEdit3("Shader Color", glm::value_ptr(s_Data.m_ShaderColor));
+    ImGui::ColorEdit3("Background Color", glm::value_ptr(s_Data.m_BgColor));
     ImGui::EndGroup();
 
     ImGui::End();
@@ -162,16 +160,12 @@ void UI::ShowScene(const FrameBuffer& sceneBuffer)
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{0, 0});
     ImGui::Begin("Scene");
     {
-        ImGui::BeginChild("GameRender");
-
         ImGui::Image(
             (ImTextureID)sceneBuffer.GetFrameTexture()->GetID(),
             ImGui::GetContentRegionAvail(),
             ImVec2(0, 1),
             ImVec2(1, 0)
         );
-
-        ImGui::EndChild();
     }
     ImGui::End();
     ImGui::PopStyleVar();

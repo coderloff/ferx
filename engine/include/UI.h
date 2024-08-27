@@ -8,10 +8,11 @@
 
 struct InspectorData
 {
-    float m_Position[3];
-    float m_Rotation[3];
-    float m_Scale[3];
-    float m_Color[3] = {1.0f, 1.0f, 1.0f};
+    glm::vec3 m_Position;
+    glm::vec3 m_Rotation;
+    glm::vec3 m_Scale = {1.0f, 1.0f, 1.0f};
+    glm::vec3 m_ShaderColor = {1.0f, 1.0f, 1.0f};
+    glm::vec3 m_BgColor = {0.0, 0.1f, 0.2f};
 };
 
 class UI
@@ -37,4 +38,7 @@ public:
 
 private:
     static InspectorData s_Data;
+
+    static std::string m_Log;
+    static ImVec4* m_StyleColors;
 };
