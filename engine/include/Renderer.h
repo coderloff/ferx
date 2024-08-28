@@ -8,6 +8,7 @@
 #include "IndexBuffer.h"
 #include "FrameBuffer.h"
 #include "Window.h"
+#include "Input.h"
 #include "Shader.h"
 #include "Texture.h"
 #include "UI.h"

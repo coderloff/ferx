@@ -1,4 +1,3 @@
-#include <glad/glad.h>
 #include "Renderer.h"
 #include "Engine.h"
 
@@ -126,10 +125,10 @@ void Renderer::Render() {
     s_Data.m_Shader->Use();
 
     auto model = glm::mat4(1.0f);
-    model = glm::translate(model, UI::GetData().m_Position);
-    if(glm::length(UI::GetData().m_Rotation) != 0)
-    model = glm::rotate(model, glm::radians(length(UI::GetData().m_Rotation)), normalize(UI::GetData().m_Rotation));
-    model = glm::scale(model, UI::GetData().m_Scale);
+    model = translate(model, UI::GetData().m_Position);
+    if(length(UI::GetData().m_Rotation) != 0)
+    model = rotate(model, glm::radians(length(UI::GetData().m_Rotation)), normalize(UI::GetData().m_Rotation));
+    model = scale(model, UI::GetData().m_Scale);
     glm::mat4 view = s_Data.m_Camera->GetViewMatrix();
 
     WindowSize size = Engine::Get().GetWindow().GetSize();
@@ -153,26 +152,22 @@ void Renderer::Render() {
 
 void Renderer::ProcessInput(GLFWwindow *window)
 {
-    if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_2) == GLFW_PRESS)
+    if(Input::IsMouseButtonPressed(ButtonRight))
     {
-        double xPosIn, yPosIn;
-        glfwGetCursorPos(window, &xPosIn, &yPosIn);
-
-        auto xPos = static_cast<float>(xPosIn);
-        auto yPos = static_cast<float>(yPosIn);
+        auto mousePos = Input::GetMousePosition();
 
         if(firstMouse)
         {
-            lastX = xPos;
-            lastY = yPos;
+            lastX = mousePos.x;
+            lastY = mousePos.y;
             firstMouse = false;
         }
 
-        float xOffset = xPos - lastX;
-        float yOffset = lastY - yPos;
+        float xOffset = mousePos.x - lastX;
+        float yOffset = lastY - mousePos.y;
 
-        lastX = xPos;
-        lastY = yPos;
+        lastX = mousePos.x;
+        lastY = mousePos.y;
 
         s_Data.m_Camera->ProcessMouseMovement(xOffset, yOffset);
 
@@ -183,19 +178,18 @@ void Renderer::ProcessInput(GLFWwindow *window)
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
 
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+    if (Input::IsKeyPressed(W))
         s_Data.m_Camera->ProcessKeyboard(FORWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+    if (Input::IsKeyPressed(S))
         s_Data.m_Camera->ProcessKeyboard(BACKWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+    if (Input::IsKeyPressed(A))
         s_Data.m_Camera->ProcessKeyboard(LEFT, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+    if (Input::IsKeyPressed(D))
         s_Data.m_Camera->ProcessKeyboard(RIGHT, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+    if (Input::IsKeyPressed(Q))
         s_Data.m_Camera->ProcessKeyboard(DOWN, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+    if (Input::IsKeyPressed(E))
         s_Data.m_Camera->ProcessKeyboard(UP, deltaTime);
-
 }
 
 void Renderer::Shutdown()

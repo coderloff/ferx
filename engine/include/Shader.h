@@ -26,6 +26,6 @@ public:
     int GetUniformLocation(const std::string& name);
 
 private:
-    unsigned int m_ID;
+    unsigned int m_ID{};
     std::unordered_map<std::string, int> m_Uniforms{};
 };
