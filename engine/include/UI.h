@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 #include <imgui.h>
 #include <string>
+#include <IconsFontAwesome6.h>
 
 struct InspectorData
 {
@@ -22,6 +23,7 @@ public:
     ~UI();
 
     static void Init(GLFWwindow* window);
+    static void LoadConfigs();
     static void Run();
     static void Render(const FrameBuffer& sceneBuffer);
     static void Shutdown();

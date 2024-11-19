@@ -17,22 +17,57 @@ void UI::Init(GLFWwindow* window)
 {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
-    ImGuiStyle& style = ImGui::GetStyle();
-    style.WindowBorderSize = 0;
-    style.WindowMenuButtonPosition = 1;
-    style.FrameRounding = 4;
-    style.GrabRounding = 4;
-    style.WindowRounding = 6;
-    m_StyleColors = style.Colors;
-    ImGui::StyleColorsDark();
+    LoadConfigs();
 
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init();
+}
+
+void UI::LoadConfigs()
+{
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
+    float baseFontSize = 14.0f;
+    float iconFontSize = baseFontSize * 2.0f / 3.0f; // FontAwesome fonts need to have their sizes reduced by 2.0f/3.0f in order to align correctly
+
+    io.Fonts->AddFontFromFileTTF("fonts/Ruda-Bold.ttf", baseFontSize);
+
+    static const ImWchar iconsRanges[] = { ICON_MIN_FA, ICON_MAX_16_FA, 0 };
+    ImFontConfig iconsConfig;
+    iconsConfig.MergeMode = true;
+    iconsConfig.PixelSnapH = true;
+    iconsConfig.GlyphMinAdvanceX = iconFontSize;
+    io.Fonts->AddFontFromFileTTF( "fonts/" FONT_ICON_FILE_NAME_FAS, iconFontSize, &iconsConfig, iconsRanges );
+
+    ImGui::StyleColorsDark();
+
+    ImGuiStyle* style = &ImGui::GetStyle();
+    m_StyleColors = style->Colors;
+
+    style->WindowMenuButtonPosition = ImGuiDir_None;
+    style->WindowBorderSize = 0;
+    style->WindowMenuButtonPosition = 1;
+    style->GrabRounding = 4;
+    style->WindowRounding = 6;
+    style->FrameRounding = 2;
+    style->FramePadding = ImVec2(5.0f, 5.0f);
+    style->SeparatorTextPadding = ImVec2(5.0f, 5.0f);
+
+    m_StyleColors[ImGuiCol_WindowBg] = ImVec4(0.14f, 0.14f, 0.14f, 1.0f);
+    m_StyleColors[ImGuiCol_Border] = ImVec4(0.03f, 0.03f, 0.03f, 1.0f);
+    m_StyleColors[ImGuiCol_FrameBg] = ImVec4(0.09f, 0.09f, 0.09f, 1.0f);
+    m_StyleColors[ImGuiCol_TitleBg] = ImVec4(0.06f, 0.06f, 0.06f, 1.0f);
+    m_StyleColors[ImGuiCol_TitleBgActive] = ImVec4(0.06f, 0.06f, 0.06f, 1.0f);
+    m_StyleColors[ImGuiCol_MenuBarBg] = ImVec4(0.11f, 0.11f, 0.11f, 1.0f);
+    m_StyleColors[ImGuiCol_Header] = ImVec4(0.08f, 0.08f, 0.08f, 1.0f);
+    m_StyleColors[ImGuiCol_Tab] = ImVec4(0.06f, 0.06f, 0.06f, 1.0f);
+    m_StyleColors[ImGuiCol_TabActive] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
+    m_StyleColors[ImGuiCol_TabUnfocused] = ImVec4(0.06f, 0.06f, 0.06f, 1.0f);
+    m_StyleColors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
 }
 
 InspectorData UI::GetData()
@@ -57,6 +92,8 @@ void UI::Render(const FrameBuffer& sceneBuffer)
     ShowMenu();
     ShowProject();
     ShowScene(sceneBuffer);
+
+    ImGui::ShowDemoWindow();
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -98,7 +135,7 @@ void UI::ShowHierarchy()
 {
     ImGui::Begin("Hierarchy");
 
-    ImGui::CollapsingHeader("Triangle");
+    ImGui::CollapsingHeader("Cube");
 
     ImGui::End();
 }
@@ -107,22 +144,14 @@ void UI::ShowInspector()
 {
     ImGui::Begin("Inspector");
 
-    ImGui::SeparatorText("Cube");
-
-    ImGui::BeginGroup();
+    if(ImGui::CollapsingHeader("Transform"))
     {
-        ImGui::Text("Transform");
-        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+        ImGui::BeginGroup();
         ImGui::DragFloat3("Position", glm::value_ptr(s_Data.m_Position), 0.2f);
-        ImGui::PopStyleColor();
-        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 1.0f, 0.0f, 1.0f));
         ImGui::DragFloat3("Rotation", glm::value_ptr(s_Data.m_Rotation), 0.4f);
-        ImGui::PopStyleColor();
-        ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.0f, 0.0f, 1.0f, 1.0f));
         ImGui::DragFloat3("Scale", glm::value_ptr(s_Data.m_Scale), 0.1f);
-        ImGui::PopStyleColor();
+        ImGui::EndGroup();
     }
-    ImGui::EndGroup();
 
     ImGui::NewLine();
 
