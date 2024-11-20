@@ -1,43 +1,14 @@
-# Ferx
-
-Ferx is a basic game engine written in c++
-
-[![CMake on a single platform](https://github.com/coderloff/ferx/actions/workflows/cmake-single-platform.yml/badge.svg)](https://github.com/coderloff/ferx/actions/workflows/cmake-single-platform.yml)
+# Ferx Engine
 
 ![Ferx](https://raw.githubusercontent.com/coderloff/ferx/refs/heads/main/docs/assets/Ferx.png)
 
-## Build
+<div align="center">
+  <img src="https://img.shields.io/github/actions/workflow/status/coderloff/ferx/cmake-single-platform.yml?style=for-the-badge" alt="Build" />
+  <img src="https://img.shields.io/github/license/coderloff/ferx?style=for-the-badge" alt="License" />
+  <img src="https://img.shields.io/github/contributors/coderloff/ferx?style=for-the-badge" alt="Contributors" />
+  <img src="https://img.shields.io/github/forks/coderloff/ferx?style=for-the-badge" alt="Forks" />
+  <img src="https://img.shields.io/github/stars/coderloff/ferx?style=for-the-badge&color=%23DFB317" alt="Stars" />
+  <img src="https://img.shields.io/github/issues/coderloff/ferx?style=for-the-badge" alt="Issues" />
+</div>
 
-To clone repo:
-```bash
-git clone https://github.com/coderloff/ferx
-```
-
-After clonning the repo, update the submodules:
-```bash
-git submodule update --init
-```
-
-That's it! You can build and run the project with `make` command
-
-### Commands
-
-Here is the list of each `make` command:
-
-`make` - builds the project and runs it (default: debug)<br>
-`make debug` - builds the project as debug<br>
-`make release` - builds the project as release<br>
-`make run` - runs the executable<br>
-`make clean` - cleans the build target<br>
-`make clean-all` - deletes build directory<br>
-
-## Dependencies
-
-Required dependencies: `git` `cmake` `make` `ninja`
-
-## Libraries
-
-* **GLFW**
-* **GLAD**
-* **GLM**
-* **ImGUI**
+Ferx is a basic game engine written in C++. This project is mainly designed for learning purposes. For more information, check out [docs](https://github.com/coderloff/ferx/)
