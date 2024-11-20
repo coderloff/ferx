@@ -4,7 +4,7 @@ Ferx is a basic game engine written in c++
 
 [![CMake on a single platform](https://github.com/coderloff/ferx/actions/workflows/cmake-single-platform.yml/badge.svg)](https://github.com/coderloff/ferx/actions/workflows/cmake-single-platform.yml)
 
-![Ferx](https://i.ibb.co/4mDhSpc/Ferx-Cube.png)
+![Ferx](https://raw.githubusercontent.com/coderloff/ferx/refs/heads/main/docs/assets/Ferx.png)
 
 ## Build
 
