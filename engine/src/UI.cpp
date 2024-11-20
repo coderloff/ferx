@@ -32,7 +32,7 @@ void UI::LoadConfigs()
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
     float baseFontSize = 14.0f;
-    float iconFontSize = baseFontSize * 2.0f / 3.0f; // FontAwesome fonts need to have their sizes reduced by 2.0f/3.0f in order to align correctly
+    float iconFontSize = baseFontSize * 2.0f / 2.4f; // FontAwesome fonts need to have their sizes reduced by 2.0f/3.0f in order to align correctly
 
     io.Fonts->AddFontFromFileTTF("fonts/Ruda-Bold.ttf", baseFontSize);
 
@@ -49,25 +49,41 @@ void UI::LoadConfigs()
     m_StyleColors = style->Colors;
 
     style->WindowMenuButtonPosition = ImGuiDir_None;
-    style->WindowBorderSize = 0;
+    style->WindowBorderSize = 0.0f;
     style->WindowMenuButtonPosition = 1;
-    style->GrabRounding = 4;
-    style->WindowRounding = 6;
-    style->FrameRounding = 2;
+    style->GrabRounding = 4.0f;
+    style->WindowRounding = 6.0f;
+    style->FrameRounding = 4.0f;
     style->FramePadding = ImVec2(5.0f, 5.0f);
+    style->PopupBorderSize = 0.0f;
+    style->PopupRounding = 4.0f;
     style->SeparatorTextPadding = ImVec2(5.0f, 5.0f);
+    style->TabBarBorderSize = 2.0f;
 
     m_StyleColors[ImGuiCol_WindowBg] = ImVec4(0.14f, 0.14f, 0.14f, 1.0f);
-    m_StyleColors[ImGuiCol_Border] = ImVec4(0.03f, 0.03f, 0.03f, 1.0f);
+    m_StyleColors[ImGuiCol_Border] = ImVec4(0.06f, 0.06f, 0.06f, 1.0f);
+    m_StyleColors[ImGuiCol_PopupBg] = ImVec4(0.06f, 0.06f, 0.06f, 1.0f);
     m_StyleColors[ImGuiCol_FrameBg] = ImVec4(0.09f, 0.09f, 0.09f, 1.0f);
+    m_StyleColors[ImGuiCol_FrameBgHovered] = ImVec4(0.03f, 0.03f, 0.03f, 0.8f);
+    m_StyleColors[ImGuiCol_FrameBgActive] = ImVec4(0.03f, 0.03f, 0.03f, 1.0f);
     m_StyleColors[ImGuiCol_TitleBg] = ImVec4(0.06f, 0.06f, 0.06f, 1.0f);
     m_StyleColors[ImGuiCol_TitleBgActive] = ImVec4(0.06f, 0.06f, 0.06f, 1.0f);
     m_StyleColors[ImGuiCol_MenuBarBg] = ImVec4(0.11f, 0.11f, 0.11f, 1.0f);
     m_StyleColors[ImGuiCol_Header] = ImVec4(0.08f, 0.08f, 0.08f, 1.0f);
+    m_StyleColors[ImGuiCol_HeaderHovered] = ImVec4(0.08f, 0.42f, 0.14f, 0.8f);
+    m_StyleColors[ImGuiCol_HeaderActive] = ImVec4(0.08f, 0.42f, 0.14f, 1.0f);
     m_StyleColors[ImGuiCol_Tab] = ImVec4(0.06f, 0.06f, 0.06f, 1.0f);
+    m_StyleColors[ImGuiCol_TabHovered] = ImVec4(0.2f, 0.2f, 0.2f, 0.5f);
     m_StyleColors[ImGuiCol_TabActive] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
     m_StyleColors[ImGuiCol_TabUnfocused] = ImVec4(0.06f, 0.06f, 0.06f, 1.0f);
     m_StyleColors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
+    m_StyleColors[ImGuiCol_CheckMark] = ImVec4(0.08f, 0.42f, 0.14f, 1.0f);
+    m_StyleColors[ImGuiCol_SliderGrab] = ImVec4(0.08f, 0.42f, 0.14f, 0.8f);
+    m_StyleColors[ImGuiCol_SliderGrabActive] = ImVec4(0.08f, 0.42f, 0.14f, 1.0f);
+    m_StyleColors[ImGuiCol_Button] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
+    m_StyleColors[ImGuiCol_ButtonHovered] = ImVec4(0.08f, 0.42f, 0.14f, 0.5f);
+    m_StyleColors[ImGuiCol_ButtonActive] = ImVec4(0.08f, 0.42f, 0.14f, 1.0f);
+    m_StyleColors[ImGuiCol_TextSelectedBg] = ImVec4(0.08f, 0.42f, 0.14f, 0.35f);
 }
 
 InspectorData UI::GetData()
@@ -87,13 +103,11 @@ void UI::Run()
 void UI::Render(const FrameBuffer& sceneBuffer)
 {
     ShowConsole();
-    ShowHierarchy();
-    ShowInspector();
+    ShowEntities();
+    ShowProperties();
     ShowMenu();
-    ShowProject();
+    ShowFiles();
     ShowScene(sceneBuffer);
-
-    ImGui::ShowDemoWindow();
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -112,7 +126,7 @@ void UI::Print(const std::string& message)
 }
 
 void UI::ShowConsole(){
-    ImGui::Begin("Console");
+    ImGui::Begin(ICON_FA_TERMINAL" Console");
 
     if(ImGui::Button("Clear")){
         m_Log.clear();
@@ -131,18 +145,18 @@ void UI::ShowConsole(){
     ImGui::End();
 }
 
-void UI::ShowHierarchy()
+void UI::ShowEntities()
 {
-    ImGui::Begin("Hierarchy");
+    ImGui::Begin(ICON_FA_CUBE" Entities");
 
     ImGui::CollapsingHeader("Cube");
 
     ImGui::End();
 }
 
-void UI::ShowInspector()
+void UI::ShowProperties()
 {
-    ImGui::Begin("Inspector");
+    ImGui::Begin(ICON_FA_BARS_STAGGERED" Properties");
 
     if(ImGui::CollapsingHeader("Transform"))
     {
@@ -177,9 +191,9 @@ void UI::ShowMenu()
     }
 }
 
-void UI::ShowProject()
+void UI::ShowFiles()
 {
-    ImGui::Begin("Project");
+    ImGui::Begin(ICON_FA_FOLDER" Files");
 
     ImGui::End();
 }
@@ -187,7 +201,7 @@ void UI::ShowProject()
 void UI::ShowScene(const FrameBuffer& sceneBuffer)
 {
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{0, 0});
-    ImGui::Begin("Scene");
+    ImGui::Begin(ICON_FA_CLAPPERBOARD" Scene");
     {
         ImGui::Image(
             (ImTextureID)sceneBuffer.GetFrameTexture()->GetID(),

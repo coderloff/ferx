@@ -32,11 +32,11 @@ public:
     static InspectorData GetData();
 
     static void ShowMenu();
-    static void ShowHierarchy();
-    static void ShowProject();
+    static void ShowEntities();
+    static void ShowFiles();
     static void ShowConsole();
     static void ShowScene(const FrameBuffer& sceneBuffer);
-    static void ShowInspector();
+    static void ShowProperties();
 
 private:
     static InspectorData s_Data;
