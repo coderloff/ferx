@@ -1,6 +1,6 @@
 # Ferx Engine
 
-![Ferx](https://raw.githubusercontent.com/coderloff/ferx/refs/heads/main/docs/assets/Ferx.png)
+![Ferx](docs/assets/Ferx.png)
 
 <div align="center">
   <img src="https://img.shields.io/github/actions/workflow/status/coderloff/ferx/cmake-single-platform.yml?style=for-the-badge" alt="Build" />
@@ -11,4 +11,6 @@
   <img src="https://img.shields.io/github/issues/coderloff/ferx?style=for-the-badge" alt="Issues" />
 </div>
 
-Ferx is a basic game engine written in C++. This project is mainly designed for learning purposes. For more information, check out [docs](https://github.com/coderloff/ferx/)
+<br>
+
+Ferx is a basic game engine written in C++. This project is mainly designed for learning purposes. For more information, check out [docs](docs)
