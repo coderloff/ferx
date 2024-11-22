@@ -3,6 +3,8 @@
 #include <imgui_impl_opengl3.h>
 #include "GUI.h"
 
+#include <Editor.h>
+
 #include "FrameBuffer.h"
 #include "Window.h"
 
@@ -146,7 +148,10 @@ void GUI::ShowEntities()
 {
     ImGui::Begin(ICON_FA_CUBE" Entities");
 
-    ImGui::CollapsingHeader("Cube");
+    for(const auto& cube : Renderer::GetData().m_Scene->GetCubes())
+    {
+        ImGui::CollapsingHeader(cube->name.c_str());
+    }
 
     ImGui::End();
 }
