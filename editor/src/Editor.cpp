@@ -1,6 +1,12 @@
 #include "Editor.h"
 
-Editor::Editor()= default;
+Editor* Editor::s_Instance = nullptr;
+Engine* Editor::s_Engine = nullptr;
+
+Editor::Editor()
+{
+    s_Instance = this;
+}
 
 Editor::~Editor()
 {
@@ -9,14 +15,22 @@ Editor::~Editor()
 
 void Editor::Init()
 {
-    auto engine = Engine();
+    s_Engine = new Engine();
 
-    engine.Run();
+    GUI::Init(s_Engine->GetWindow()->GetNativeWindow());
+
+    Run();
 }
 
-void Editor::Run() {
+void Editor::Run()
+{
+    while (!glfwWindowShouldClose(s_Engine->GetWindow()->GetNativeWindow())) {
+        s_Engine->Run();
+        GUI::Run();
+        GUI::Render(*Renderer::GetData().m_FBO);
+    }
 }
 
-void Editor::Shutdown() {
+void Editor::Shutdown(){
 
 }

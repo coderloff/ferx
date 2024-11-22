@@ -18,9 +18,7 @@ Engine::~Engine()
 
 void Engine::Run()
 {
-    while (!glfwWindowShouldClose(m_Window->GetWindow())) {
-        Renderer::Render();
-    }
+    Renderer::Render();
 }
 
 void Engine::Shutdown()

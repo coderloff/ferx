@@ -3,32 +3,12 @@
 
 RendererData Renderer::s_Data;
 
-float Renderer::deltaTime = 0.0f;
-float Renderer::lastFrame = 0.0f;
+float Renderer::s_DeltaTime = 0.0f;
+float Renderer::s_LastFrame = 0.0f;
 
-bool Renderer::firstMouse = true;
-float Renderer::lastX;
-float Renderer::lastY;
-
-float vertices[] = {
-    -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,
-     0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0.0f,
-     0.5f,  0.5f, -0.5f,  0.0f, 0.0f, 1.0f,
-    -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, 1.0f, 1.0f,
-     0.5f, -0.5f,  0.5f,  1.0f, 0.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 1.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 0.0f,
-};
-
-unsigned int indices[] = {
-    0, 1, 2, 2, 3, 0,
-    4, 5, 6, 6, 7, 4,
-    0, 1, 5, 5, 4, 0,
-    2, 3, 7, 7, 6, 2,
-    0, 3, 7, 7, 4, 0,
-    1, 2, 6, 6, 5, 1
-};
+bool Renderer::s_FirstMouse = true;
+float Renderer::s_LastX;
+float Renderer::s_LastY;
 
 Renderer::Renderer() = default;
 
@@ -44,15 +24,23 @@ void Renderer::Init()
         return;
     }
 
-    UI::Init(Engine::Get().GetWindow().GetWindow());
-    s_Data.m_Camera = new Camera(glm::vec3(0.0f, 0.0f, 3.0f));
-
+    SetVariables();
     LoadShaders();
     SetupBuffers();
     SetCallbacks();
 }
 
-RendererData Renderer::GetData()
+void Renderer::SetVariables()
+{
+    s_Data.m_Scene = new Scene();
+    s_Data.m_Camera = new Camera(glm::vec3(0.0f, 0.0f, 3.0f));
+    s_Data.m_Cube = new Cube("Cube");
+    s_Data.m_ClearColor = new glm::vec3(0.0f, 0.1f, 0.2f);
+
+    s_Data.m_Scene->AddCube(std::shared_ptr<Cube>(s_Data.m_Cube));
+}
+
+RendererData& Renderer::GetData()
 {
     return s_Data;
 }
@@ -70,8 +58,8 @@ void Renderer::SetupBuffers()
 
     s_Data.m_VAO->Bind();
 
-    s_Data.m_VBO->SetData(sizeof(vertices), vertices);
-    s_Data.m_IBO->SetData(sizeof(indices), indices);
+    s_Data.m_VBO->SetData(sizeof(float) * Cube::GetVertices().size(), Cube::GetVertices().data());
+    s_Data.m_IBO->SetData(sizeof(unsigned int) * Cube::GetIndices().size(), Cube::GetIndices().data());
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), nullptr);
     glEnableVertexAttribArray(0);
@@ -84,22 +72,22 @@ void Renderer::SetupBuffers()
     IndexBuffer::Unbind();
 
     s_Data.m_FBO = new FrameBuffer();
-    WindowSize windowSize = Engine::Get().GetWindow().GetSize();
+    WindowSize windowSize = Engine::Get()->GetWindow()->GetSize();
     s_Data.m_FBO->AttachTexture(windowSize.Width, windowSize.Height);
     FrameBuffer::Unbind();
 }
 
 void Renderer::SetCallbacks()
 {
-    glfwSetWindowSizeCallback(Engine::Get().GetWindow().GetWindow(), [](GLFWwindow* window, int width, int height)
+    glfwSetWindowSizeCallback(Engine::Get()->GetWindow()->GetNativeWindow(), [](GLFWwindow* window, int width, int height)
     {
         SetupBuffers();
     });
-    glfwSetFramebufferSizeCallback(Engine::Get().GetWindow().GetWindow(), [](GLFWwindow* window, int width, int height)
+    glfwSetFramebufferSizeCallback(Engine::Get()->GetWindow()->GetNativeWindow(), [](GLFWwindow* window, int width, int height)
     {
         glViewport(0, 0, width, height);
     });
-    glfwSetScrollCallback(Engine::Get().GetWindow().GetWindow(), [](GLFWwindow* window, double xOffset, double yOffset)
+    glfwSetScrollCallback(Engine::Get()->GetWindow()->GetNativeWindow(), [](GLFWwindow* window, double xOffset, double yOffset)
     {
         s_Data.m_Camera->ProcessMouseScroll(static_cast<float>(yOffset));
     });
@@ -107,37 +95,35 @@ void Renderer::SetCallbacks()
 
 void Renderer::Render() {
     auto currentFrame = static_cast<float>(glfwGetTime());
-    deltaTime = currentFrame - lastFrame;
-    lastFrame = currentFrame;
+    s_DeltaTime = currentFrame - s_LastFrame;
+    s_LastFrame = currentFrame;
 
     s_Data.m_FBO->Bind();
 
     glfwPollEvents();
-    ProcessInput(Engine::Get().GetWindow().GetWindow());
+    ProcessInput(Engine::Get()->GetWindow()->GetNativeWindow());
 
     glEnable(GL_DEPTH_TEST);
-    glm::vec3 color = UI::GetData().m_BgColor;
-    glClearColor(color.x, color.y, color.z, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    UI::Run();
+    glClearColor(s_Data.m_ClearColor->x, s_Data.m_ClearColor->y, s_Data.m_ClearColor->z, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     s_Data.m_Shader->Use();
 
-    auto model = glm::mat4(1.0f);
-    model = translate(model, UI::GetData().m_Position);
-    if(length(UI::GetData().m_Rotation) != 0)
-    model = rotate(model, glm::radians(length(UI::GetData().m_Rotation)), normalize(UI::GetData().m_Rotation));
-    model = scale(model, UI::GetData().m_Scale);
-    glm::mat4 view = s_Data.m_Camera->GetViewMatrix();
+    s_Data.m_Cube->Draw();
 
-    WindowSize size = Engine::Get().GetWindow().GetSize();
+    const glm::mat4& model = *s_Data.m_Cube->GetModelMatrix();
+    const glm::mat4& view = s_Data.m_Camera->GetViewMatrix();
+
+    WindowSize size = Engine::Get()->GetWindow()->GetSize();
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), static_cast<float>(size.Width) / static_cast<float>(size.Height), 0.1f, 100.0f);
 
     glUniformMatrix4fv(s_Data.m_Shader->GetUniformLocation("model"), 1, GL_FALSE, glm::value_ptr(model));
     glUniformMatrix4fv(s_Data.m_Shader->GetUniformLocation("view"), 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(s_Data.m_Shader->GetUniformLocation("projection"), 1, GL_FALSE, glm::value_ptr(projection));
-    glUniform3fv(s_Data.m_Shader->GetUniformLocation("color"), 1, glm::value_ptr(UI::GetData().m_ShaderColor));
+    glUniform3fv(s_Data.m_Shader->GetUniformLocation("color"), 1, glm::value_ptr(*s_Data.m_Cube->GetShaderColor()));
+
+    *s_Data.m_Cube->GetModelMatrix() = glm::mat4(1.0f);
 
     s_Data.m_VAO->Bind();
 
@@ -145,9 +131,7 @@ void Renderer::Render() {
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-    UI::Render(*s_Data.m_FBO);
-
-    glfwSwapBuffers(Engine::Get().GetWindow().GetWindow());
+    glfwSwapBuffers(Engine::Get()->GetWindow()->GetNativeWindow());
 }
 
 void Renderer::ProcessInput(GLFWwindow *window)
@@ -156,18 +140,18 @@ void Renderer::ProcessInput(GLFWwindow *window)
     {
         auto mousePos = Input::GetMousePosition();
 
-        if(firstMouse)
+        if(s_FirstMouse)
         {
-            lastX = mousePos.x;
-            lastY = mousePos.y;
-            firstMouse = false;
+            s_LastX = mousePos.x;
+            s_LastY = mousePos.y;
+            s_FirstMouse = false;
         }
 
-        float xOffset = mousePos.x - lastX;
-        float yOffset = lastY - mousePos.y;
+        float xOffset = mousePos.x - s_LastX;
+        float yOffset = s_LastY - mousePos.y;
 
-        lastX = mousePos.x;
-        lastY = mousePos.y;
+        s_LastX = mousePos.x;
+        s_LastY = mousePos.y;
 
         s_Data.m_Camera->ProcessMouseMovement(xOffset, yOffset);
 
@@ -179,17 +163,17 @@ void Renderer::ProcessInput(GLFWwindow *window)
     }
 
     if (Input::IsKeyPressed(W))
-        s_Data.m_Camera->ProcessKeyboard(FORWARD, deltaTime);
+        s_Data.m_Camera->ProcessKeyboard(FORWARD, s_DeltaTime);
     if (Input::IsKeyPressed(S))
-        s_Data.m_Camera->ProcessKeyboard(BACKWARD, deltaTime);
+        s_Data.m_Camera->ProcessKeyboard(BACKWARD, s_DeltaTime);
     if (Input::IsKeyPressed(A))
-        s_Data.m_Camera->ProcessKeyboard(LEFT, deltaTime);
+        s_Data.m_Camera->ProcessKeyboard(LEFT, s_DeltaTime);
     if (Input::IsKeyPressed(D))
-        s_Data.m_Camera->ProcessKeyboard(RIGHT, deltaTime);
+        s_Data.m_Camera->ProcessKeyboard(RIGHT, s_DeltaTime);
     if (Input::IsKeyPressed(Q))
-        s_Data.m_Camera->ProcessKeyboard(DOWN, deltaTime);
+        s_Data.m_Camera->ProcessKeyboard(DOWN, s_DeltaTime);
     if (Input::IsKeyPressed(E))
-        s_Data.m_Camera->ProcessKeyboard(UP, deltaTime);
+        s_Data.m_Camera->ProcessKeyboard(UP, s_DeltaTime);
 }
 
 void Renderer::Shutdown()

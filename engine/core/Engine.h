@@ -4,7 +4,6 @@
 #include <GLFW/glfw3.h>
 #include "Renderer.h"
 #include "Window.h"
-#include "UI.h"
 
 class Engine
 {
@@ -12,9 +11,9 @@ public:
     Engine();
     ~Engine();
 
-    Window& GetWindow() const { return *m_Window; }
+    Window* GetWindow() const { return m_Window; }
 
-    static Engine& Get() { return *s_Instance; }
+    static Engine* Get() { return s_Instance; }
 
     void Run();
     void Render();

@@ -7,20 +7,11 @@
 #include <string>
 #include <IconsFontAwesome6.h>
 
-struct InspectorData
-{
-    glm::vec3 m_Position;
-    glm::vec3 m_Rotation;
-    glm::vec3 m_Scale = {1.0f, 1.0f, 1.0f};
-    glm::vec3 m_ShaderColor = {1.0f, 1.0f, 1.0f};
-    glm::vec3 m_BgColor = {0.0, 0.1f, 0.2f};
-};
-
-class UI
+class GUI
 {
 public:
-    UI();
-    ~UI();
+    GUI();
+    ~GUI();
 
     static void Init(GLFWwindow* window);
     static void LoadConfigs();
@@ -29,7 +20,6 @@ public:
     static void Shutdown();
 
     static void Print(const std::string& message);
-    static InspectorData GetData();
 
     static void ShowMenu();
     static void ShowEntities();
@@ -39,8 +29,6 @@ public:
     static void ShowProperties();
 
 private:
-    static InspectorData s_Data;
-
-    static std::string m_Log;
-    static ImVec4* m_StyleColors;
+    static std::string s_Log;
+    static ImVec4* s_StyleColors;
 };

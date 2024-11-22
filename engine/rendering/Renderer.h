@@ -9,10 +9,11 @@
 #include "FrameBuffer.h"
 #include "Window.h"
 #include "Input.h"
+#include "Scene.h"
 #include "Shader.h"
 #include "Texture.h"
-#include "UI.h"
 #include "Camera.h"
+#include "Cube.h"
 
 struct RendererData
 {
@@ -20,8 +21,12 @@ struct RendererData
     VertexBuffer* m_VBO;
     IndexBuffer* m_IBO;
     FrameBuffer* m_FBO;
-    Camera* m_Camera;
+    Scene* m_Scene;
     Shader* m_Shader;
+    Camera* m_Camera;
+    Cube* m_Cube;
+
+    glm::vec3* m_ClearColor;
 };
 
 class Renderer
@@ -34,20 +39,21 @@ public:
     static void Render();
     static void Shutdown();
 
-    static RendererData GetData();
+    static RendererData& GetData();
 
 private:
     static RendererData s_Data;
 
+    static void SetVariables();
     static void LoadShaders();
     static void SetupBuffers();
     static void SetCallbacks();
     static void ProcessInput(GLFWwindow* window);
 
-    static float deltaTime;
-    static float lastFrame;
+    static float s_DeltaTime;
+    static float s_LastFrame;
 
-    static bool firstMouse;
-    static float lastX;
-    static float lastY;
+    static bool s_FirstMouse;
+    static float s_LastX;
+    static float s_LastY;
 };
