@@ -1,3 +1,4 @@
+# Set minimum CMake version
 cmake_minimum_required(VERSION 3.22)
 
 # Declare project
@@ -10,7 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Define variables of directory paths
 set(THIRDPARTY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty)
 
-# Add thirdparty libraries
+# Add third party libraries
 add_subdirectory(${THIRDPARTY_DIR}/glad)
 add_subdirectory(${THIRDPARTY_DIR}/glfw)
 add_subdirectory(${THIRDPARTY_DIR}/glm)

@@ -2,6 +2,7 @@
 
 #include <glad/glad.h>
 #include <stb_image.h>
+#include <iostream>
 #include <string>
 
 class Texture

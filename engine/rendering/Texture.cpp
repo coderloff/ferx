@@ -1,4 +1,3 @@
-#include "UI.h"
 #include "Texture.h"
 
 Texture::Texture()
@@ -43,7 +42,7 @@ void Texture::GenerateFromImage(const std::string& path)
     }
     else
     {
-        UI::Print("Failed to load texture: " + path);
+        std::cerr << "Failed to load texture: " << path;
     }
     stbi_image_free(m_Data);
 
