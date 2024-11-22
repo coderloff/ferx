@@ -35,7 +35,7 @@ public:
 
     void Init();
 
-    GLFWwindow* GetWindow() const;
+    GLFWwindow* GetNativeWindow() const;
     const std::string& GetTitle() const;
     WindowSize GetSize();
 

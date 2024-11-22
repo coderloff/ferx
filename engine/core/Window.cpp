@@ -49,7 +49,7 @@ Window Window::Create(const std::string& title, int width, int height)
     return Window{title, width, height};
 }
 
-GLFWwindow* Window::GetWindow() const
+GLFWwindow* Window::GetNativeWindow() const
 {
     return m_Window;
 }

@@ -2,7 +2,7 @@
 
 #define GLFW_INCLUDE_NONE
 #include "Engine.h"
-#include "UI.h"
+#include "GUI.h"
 
 class Editor
 {
@@ -14,6 +14,10 @@ public:
     static void Run();
     static void Shutdown();
 
+    static Editor* GetInstance();
+    static Engine* GetEngine();
+
 private:
-    void InitializeImGui();
+    static Editor* s_Instance;
+    static Engine* s_Engine;
 };
