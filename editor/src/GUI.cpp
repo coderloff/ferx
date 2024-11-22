@@ -33,17 +33,19 @@ void GUI::LoadConfigs()
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
+    io.IniFilename = EDITOR_RESOURCES_PATH"imgui.ini";
+
     float baseFontSize = 14.0f;
     float iconFontSize = baseFontSize * 2.0f / 2.4f; // FontAwesome fonts need to have their sizes reduced by 2.0f/3.0f in order to align correctly
 
-    io.Fonts->AddFontFromFileTTF("fonts/Ruda-Bold.ttf", baseFontSize);
+    io.Fonts->AddFontFromFileTTF(ENGINE_RESOURCES_PATH"fonts/Ruda-Bold.ttf", baseFontSize);
 
     static const ImWchar iconsRanges[] = { ICON_MIN_FA, ICON_MAX_16_FA, 0 };
     ImFontConfig iconsConfig;
     iconsConfig.MergeMode = true;
     iconsConfig.PixelSnapH = true;
     iconsConfig.GlyphMinAdvanceX = iconFontSize;
-    io.Fonts->AddFontFromFileTTF( "fonts/" FONT_ICON_FILE_NAME_FAS, iconFontSize, &iconsConfig, iconsRanges );
+    io.Fonts->AddFontFromFileTTF(ENGINE_RESOURCES_PATH"fonts/" FONT_ICON_FILE_NAME_FAS, iconFontSize, &iconsConfig, iconsRanges );
 
     ImGui::StyleColorsDark();
 

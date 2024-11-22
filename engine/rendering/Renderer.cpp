@@ -47,7 +47,7 @@ RendererData& Renderer::GetData()
 
 void Renderer::LoadShaders()
 {
-    s_Data.m_Shader = new Shader(RESOURCES_PATH"shaders/vertex.glsl", RESOURCES_PATH"shaders/fragment.glsl");
+    s_Data.m_Shader = new Shader(ENGINE_RESOURCES_PATH"shaders/vertex.glsl", ENGINE_RESOURCES_PATH"shaders/fragment.glsl");
 }
 
 void Renderer::SetupBuffers()
