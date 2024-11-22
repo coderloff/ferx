@@ -28,7 +28,7 @@ add_library(${PROJECT_NAME})
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     target_compile_definitions(${PROJECT_NAME} PUBLIC RESOURCES_PATH="./resources/")
 else()
-    target_compile_definitions(${PROJECT_NAME} PUBLIC RESOURCES_PATH="${CMAKE_SOURCE_DIR}/editor/resources/")
+    target_compile_definitions(${PROJECT_NAME} PUBLIC RESOURCES_PATH="${CMAKE_SOURCE_DIR}/engine/resources/")
 endif()
 
 # Link sources, include directories, and third party libraries
