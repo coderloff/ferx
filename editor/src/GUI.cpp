@@ -3,8 +3,7 @@
 #include <imgui_impl_opengl3.h>
 #include "GUI.h"
 
-#include <Editor.h>
-
+#include "Editor.h"
 #include "FrameBuffer.h"
 #include "Window.h"
 
@@ -65,6 +64,7 @@ void GUI::LoadConfigs()
     style->TabBarBorderSize = 2.0f;
 
     s_StyleColors[ImGuiCol_WindowBg] = ImVec4(0.14f, 0.14f, 0.14f, 1.0f);
+    s_StyleColors[ImGuiCol_DockingEmptyBg] = ImVec4(0.06f, 0.06f, 0.06f, 1.0f);
     s_StyleColors[ImGuiCol_Border] = ImVec4(0.06f, 0.06f, 0.06f, 1.0f);
     s_StyleColors[ImGuiCol_PopupBg] = ImVec4(0.06f, 0.06f, 0.06f, 1.0f);
     s_StyleColors[ImGuiCol_FrameBg] = ImVec4(0.09f, 0.09f, 0.09f, 1.0f);
@@ -96,9 +96,6 @@ void GUI::Run()
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
     ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
-
-    glm::vec3* clearColor = Renderer::GetData().m_ClearColor;
-    s_StyleColors[ImGuiCol_DockingEmptyBg] = ImVec4(clearColor->x, clearColor->y, clearColor->z, 1.0f);
 }
 
 void GUI::Render(const FrameBuffer& sceneBuffer)

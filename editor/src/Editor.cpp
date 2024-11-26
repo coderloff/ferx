@@ -13,6 +13,16 @@ Editor::~Editor()
     Shutdown();
 }
 
+Editor* Editor::GetInstance()
+{
+    return s_Instance;
+}
+
+Engine* Editor::GetEngine()
+{
+    return s_Engine;
+}
+
 void Editor::Init()
 {
     s_Engine = new Engine();
