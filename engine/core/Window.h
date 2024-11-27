@@ -39,6 +39,7 @@ public:
     const std::string& GetTitle() const;
     WindowSize GetSize();
 
+	void SetWindowIcon() const;
     void Shutdown() const;
 
 private:
