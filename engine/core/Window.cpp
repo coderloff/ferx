@@ -5,7 +5,7 @@ Window::Window()
     Init();
 }
 
-Window::Window(const std::string& title, int width, int height)
+Window::Window(const std::string& title, const int width, const int height)
 {
     m_Data = WindowData{title, width, height};
     Init();
@@ -28,6 +28,7 @@ void Window::Init()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_SCALE_TO_MONITOR, GLFW_TRUE);
 #if defined(_WIN32)
 	// Add Windows-specific configuration if needed
 #elif defined(__linux__)
@@ -41,6 +42,8 @@ void Window::Init()
         glfwTerminate();
         return;
     }
+
+    GetScale();
 
     SetWindowIcon();
 
@@ -71,6 +74,12 @@ WindowSize Window::GetSize()
 {
     glfwGetWindowSize(m_Window, &m_Data.Size.Width, &m_Data.Size.Height);
     return m_Data.Size;
+}
+
+WindowScale Window::GetScale()
+{
+    glfwGetWindowContentScale(m_Window, &m_Data.Scale.X, &m_Data.Scale.Y);
+    return m_Data.Scale;
 }
 
 void Window::SetWindowIcon() const

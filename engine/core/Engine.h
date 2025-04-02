@@ -1,8 +1,6 @@
 #pragma once
 
 #define GLFW_INCLUDE_NONE
-#include <GLFW/glfw3.h>
-#include "Renderer.h"
 #include "Window.h"
 
 class Engine
@@ -15,9 +13,9 @@ public:
 
     static Engine* Get() { return s_Instance; }
 
-    void Run();
+    static void Run();
     void Render();
-    void Shutdown();
+    static void Shutdown();
 
 private:
     Window* m_Window;

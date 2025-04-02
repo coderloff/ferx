@@ -7,6 +7,8 @@
 #include <string>
 #include <IconsFontAwesome6.h>
 
+struct WindowScale;
+
 class GUI
 {
 public:
@@ -31,4 +33,5 @@ public:
 private:
     static std::string s_Log;
     static ImVec4* s_StyleColors;
+    static WindowScale s_WindowScale;
 };
