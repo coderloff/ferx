@@ -5,7 +5,7 @@ Window::Window()
     Init();
 }
 
-Window::Window(const std::string& title, int width, int height)
+Window::Window(const std::string& title, const int width, const int height)
 {
     m_Data = WindowData{title, width, height};
     Init();
@@ -28,6 +28,13 @@ void Window::Init()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_SCALE_TO_MONITOR, GLFW_TRUE);
+#if defined(_WIN32)
+	// Add Windows-specific configuration if needed
+#elif defined(__linux__)
+    glfwWindowHintString(GLFW_X11_CLASS_NAME, "ferx");
+    glfwWindowHintString(GLFW_X11_INSTANCE_NAME, "Ferx");
+#endif
 
     m_Window = glfwCreateWindow(m_Data.Size.Width, m_Data.Size.Height, m_Data.Title.c_str(), nullptr, nullptr);
     if (!m_Window) {
@@ -35,6 +42,10 @@ void Window::Init()
         glfwTerminate();
         return;
     }
+
+    GetScale();
+
+    SetWindowIcon();
 
     glfwMakeContextCurrent(m_Window);
 }
@@ -63,6 +74,33 @@ WindowSize Window::GetSize()
 {
     glfwGetWindowSize(m_Window, &m_Data.Size.Width, &m_Data.Size.Height);
     return m_Data.Size;
+}
+
+WindowScale Window::GetScale()
+{
+    glfwGetWindowContentScale(m_Window, &m_Data.Scale.X, &m_Data.Scale.Y);
+    return m_Data.Scale;
+}
+
+void Window::SetWindowIcon() const
+{
+    int width, height, channels;
+    const char* iconPath = ENGINE_RESOURCES_PATH"icons/icon.png";
+
+    unsigned char* pixels = stbi_load(iconPath, &width, &height, &channels, 4); // Force RGBA
+    if (!pixels) {
+        std::cerr << "Failed to load icon: " << iconPath << std::endl;
+        return;
+    }
+
+    GLFWimage images[1];
+    images[0].width = width;
+    images[0].height = height;
+    images[0].pixels = pixels;
+
+    glfwSetWindowIcon(m_Window, 1, images);
+
+    stbi_image_free(pixels);
 }
 
 void Window::Shutdown() const

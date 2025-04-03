@@ -11,16 +11,24 @@ struct WindowSize
     int Width, Height;
 
     WindowSize(): Width(0), Height(0){}
-    WindowSize(int width, int height): Width(width), Height(height){}
+    WindowSize(const int width, const int height): Width(width), Height(height){}
+};
+
+struct WindowScale
+{
+    float X, Y;
+
+    WindowScale(): X(1), Y(1){}
 };
 
 struct WindowData
 {
     std::string Title;
     WindowSize Size;
+    WindowScale Scale;
 
     WindowData(): Title("Ferx Engine"), Size(900, 600){}
-    WindowData(const std::string& title, int width, int height): Title(title), Size(width, height){};
+    WindowData(const std::string& title, const int width, const int height): Title(title), Size(width, height){};
 };
 
 class Window
@@ -38,7 +46,9 @@ public:
     GLFWwindow* GetNativeWindow() const;
     const std::string& GetTitle() const;
     WindowSize GetSize();
+    WindowScale GetScale();
 
+	void SetWindowIcon() const;
     void Shutdown() const;
 
 private:

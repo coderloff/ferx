@@ -21,7 +21,8 @@ file(GLOB COMPONENTS_SOURCES "${COMPONENTS_INCLUDES}/*.cpp")
 set(UI_INCLUDES ui)
 file(GLOB UI_SOURCES "${UI_INCLUDES}/*.cpp")
 
-set(ENGINE_RESOURCES_DIR resources)
+set(ENGINE_RESOURCES_DIR ${CMAKE_CURRENT_SOURCE_DIR}/resources)
+set(ENGINE_RESOURCES_DIR ${ENGINE_RESOURCES_DIR} PARENT_SCOPE)
 
 # Build engine as library
 add_library(${PROJECT_NAME})
@@ -31,7 +32,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Release")
     file(COPY ${ENGINE_RESOURCES_DIR} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
     target_compile_definitions(${PROJECT_NAME} PUBLIC ENGINE_RESOURCES_PATH="${CMAKE_CURRENT_BINARY_DIR}/resources/")
 else()
-    target_compile_definitions(${PROJECT_NAME} PUBLIC ENGINE_RESOURCES_PATH="${CMAKE_CURRENT_SOURCE_DIR}/resources/")
+    target_compile_definitions(${PROJECT_NAME} PUBLIC ENGINE_RESOURCES_PATH="${ENGINE_RESOURCES_DIR}/")
 endif()
 
 # Link sources, include directories, and third party libraries

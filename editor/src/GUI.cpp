@@ -3,13 +3,13 @@
 #include <imgui_impl_opengl3.h>
 #include "GUI.h"
 
-#include <Editor.h>
-
+#include "Editor.h"
 #include "FrameBuffer.h"
 #include "Window.h"
 
 std::string GUI::s_Log;
 ImVec4* GUI::s_StyleColors;
+WindowScale GUI::s_WindowScale;
 
 GUI::GUI()= default;
 
@@ -35,12 +35,14 @@ void GUI::LoadConfigs()
 
     io.IniFilename = EDITOR_RESOURCES_PATH"imgui.ini";
 
-    float baseFontSize = 14.0f;
-    float iconFontSize = baseFontSize * 2.0f / 2.4f; // FontAwesome fonts need to have their sizes reduced by 2.0f/3.0f in order to align correctly
+    s_WindowScale = Engine::Get()->GetWindow()->GetScale();
+
+    const float baseFontSize = 14.0f * s_WindowScale.X;
+    const float iconFontSize = baseFontSize * 2.0f / 2.4f; // FontAwesome fonts need to have their sizes reduced by 2.0f/3.0f in order to align correctly
 
     io.Fonts->AddFontFromFileTTF(ENGINE_RESOURCES_PATH"fonts/Ruda-Bold.ttf", baseFontSize);
 
-    static const ImWchar iconsRanges[] = { ICON_MIN_FA, ICON_MAX_16_FA, 0 };
+    static constexpr ImWchar iconsRanges[] = { ICON_MIN_FA, ICON_MAX_16_FA, 0 };
     ImFontConfig iconsConfig;
     iconsConfig.MergeMode = true;
     iconsConfig.PixelSnapH = true;
@@ -52,19 +54,20 @@ void GUI::LoadConfigs()
     ImGuiStyle* style = &ImGui::GetStyle();
     s_StyleColors = style->Colors;
 
-    style->WindowMenuButtonPosition = ImGuiDir_None;
-    style->WindowBorderSize = 0.0f;
+    //style->WindowMenuButtonPosition = ImGuiDir_None;
     style->WindowMenuButtonPosition = 1;
-    style->GrabRounding = 4.0f;
-    style->WindowRounding = 6.0f;
-    style->FrameRounding = 4.0f;
-    style->FramePadding = ImVec2(5.0f, 5.0f);
-    style->PopupBorderSize = 0.0f;
-    style->PopupRounding = 4.0f;
-    style->SeparatorTextPadding = ImVec2(5.0f, 5.0f);
-    style->TabBarBorderSize = 2.0f;
+    style->WindowBorderSize = 0.0f * s_WindowScale.X;
+    style->GrabRounding = 4.0f * s_WindowScale.X;
+    style->WindowRounding = 6.0f * s_WindowScale.X;
+    style->FrameRounding = 4.0f * s_WindowScale.X;
+    style->FramePadding = ImVec2(5.0f * s_WindowScale.X, 5.0f * s_WindowScale.X);
+    style->PopupBorderSize = 0.0f * s_WindowScale.X;
+    style->PopupRounding = 4.0f * s_WindowScale.X;
+    style->SeparatorTextPadding = ImVec2(5.0f * s_WindowScale.X, 5.0f * s_WindowScale.X);
+    style->TabBarBorderSize = 2.0f * s_WindowScale.X;
 
     s_StyleColors[ImGuiCol_WindowBg] = ImVec4(0.14f, 0.14f, 0.14f, 1.0f);
+    s_StyleColors[ImGuiCol_DockingEmptyBg] = ImVec4(0.06f, 0.06f, 0.06f, 1.0f);
     s_StyleColors[ImGuiCol_Border] = ImVec4(0.06f, 0.06f, 0.06f, 1.0f);
     s_StyleColors[ImGuiCol_PopupBg] = ImVec4(0.06f, 0.06f, 0.06f, 1.0f);
     s_StyleColors[ImGuiCol_FrameBg] = ImVec4(0.09f, 0.09f, 0.09f, 1.0f);
@@ -96,9 +99,6 @@ void GUI::Run()
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
     ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
-
-    glm::vec3* clearColor = Renderer::GetData().m_ClearColor;
-    s_StyleColors[ImGuiCol_DockingEmptyBg] = ImVec4(clearColor->x, clearColor->y, clearColor->z, 1.0f);
 }
 
 void GUI::Render(const FrameBuffer& sceneBuffer)
