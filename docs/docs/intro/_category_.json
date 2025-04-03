@@ -1,9 +1,0 @@
-{
-    "label": "Intro",
-    "position": 1,
-    "link": {
-      "type": "generated-index",
-      "description": "This is the introduction to the documentation. It provides an overview of the project, its purpose, and how to get started."
-    }
-  }
-  
