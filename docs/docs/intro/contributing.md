@@ -1,3 +1,7 @@
+---
+sidebar_position: 3
+---
+
 # Contributing
 
 Firstly, thanks for all the contributions!
