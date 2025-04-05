@@ -54,8 +54,7 @@ void GUI::LoadConfigs()
     ImGuiStyle* style = &ImGui::GetStyle();
     s_StyleColors = style->Colors;
 
-    //style->WindowMenuButtonPosition = ImGuiDir_None;
-    style->WindowMenuButtonPosition = 1;
+    style->WindowMenuButtonPosition = ImGuiDir_None;
     style->WindowBorderSize = 0.0f * s_WindowScale.X;
     style->GrabRounding = 4.0f * s_WindowScale.X;
     style->WindowRounding = 6.0f * s_WindowScale.X;
@@ -65,6 +64,7 @@ void GUI::LoadConfigs()
     style->PopupRounding = 4.0f * s_WindowScale.X;
     style->SeparatorTextPadding = ImVec2(5.0f * s_WindowScale.X, 5.0f * s_WindowScale.X);
     style->TabBarBorderSize = 2.0f * s_WindowScale.X;
+    style->TabBarOverlineSize = 1.5f * s_WindowScale.X;
 
     s_StyleColors[ImGuiCol_WindowBg] = ImVec4(0.14f, 0.14f, 0.14f, 1.0f);
     s_StyleColors[ImGuiCol_DockingEmptyBg] = ImVec4(0.06f, 0.06f, 0.06f, 1.0f);
@@ -79,11 +79,19 @@ void GUI::LoadConfigs()
     s_StyleColors[ImGuiCol_Header] = ImVec4(0.08f, 0.08f, 0.08f, 1.0f);
     s_StyleColors[ImGuiCol_HeaderHovered] = ImVec4(0.08f, 0.42f, 0.14f, 0.8f);
     s_StyleColors[ImGuiCol_HeaderActive] = ImVec4(0.08f, 0.42f, 0.14f, 1.0f);
+    s_StyleColors[ImGuiCol_Separator] = ImVec4(0.08f, 0.42f, 0.14f, 0.3f);
+    s_StyleColors[ImGuiCol_SeparatorHovered] = ImVec4(0.08f, 0.42f, 0.14f, 0.8f);
+    s_StyleColors[ImGuiCol_SeparatorActive] = ImVec4(0.08f, 0.42f, 0.14f, 1.0f);
+    s_StyleColors[ImGuiCol_ResizeGrip] = ImVec4(0.08f, 0.42f, 0.14f, 0.2f);
+    s_StyleColors[ImGuiCol_ResizeGripHovered] = ImVec4(0.08f, 0.42f, 0.14f, 0.8f);
+    s_StyleColors[ImGuiCol_ResizeGripActive] = ImVec4(0.08f, 0.42f, 0.14f, 1.0f);
     s_StyleColors[ImGuiCol_Tab] = ImVec4(0.06f, 0.06f, 0.06f, 1.0f);
     s_StyleColors[ImGuiCol_TabHovered] = ImVec4(0.2f, 0.2f, 0.2f, 0.5f);
     s_StyleColors[ImGuiCol_TabActive] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
     s_StyleColors[ImGuiCol_TabUnfocused] = ImVec4(0.06f, 0.06f, 0.06f, 1.0f);
     s_StyleColors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
+    s_StyleColors[ImGuiCol_TabSelectedOverline] = ImVec4(0.08f, 0.42f, 0.14f, 1.0f);
+    s_StyleColors[ImGuiCol_DockingPreview] = ImVec4(0.08f, 0.42f, 0.14f, 0.8f);
     s_StyleColors[ImGuiCol_CheckMark] = ImVec4(0.08f, 0.42f, 0.14f, 1.0f);
     s_StyleColors[ImGuiCol_SliderGrab] = ImVec4(0.08f, 0.42f, 0.14f, 0.8f);
     s_StyleColors[ImGuiCol_SliderGrabActive] = ImVec4(0.08f, 0.42f, 0.14f, 1.0f);
@@ -91,6 +99,8 @@ void GUI::LoadConfigs()
     s_StyleColors[ImGuiCol_ButtonHovered] = ImVec4(0.08f, 0.42f, 0.14f, 0.5f);
     s_StyleColors[ImGuiCol_ButtonActive] = ImVec4(0.08f, 0.42f, 0.14f, 1.0f);
     s_StyleColors[ImGuiCol_TextSelectedBg] = ImVec4(0.08f, 0.42f, 0.14f, 0.35f);
+    s_StyleColors[ImGuiCol_TextLink] = ImVec4(0.08f, 0.42f, 0.14f, 1.0f);
+    s_StyleColors[ImGuiCol_NavCursor] = ImVec4(0.08f, 0.42f, 0.14f, 1.0f);
 }
 
 void GUI::Run()
@@ -98,7 +108,7 @@ void GUI::Run()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-    ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+    ImGui::DockSpaceOverViewport(ImGui::GetMainViewport()->ID);
 }
 
 void GUI::Render(const FrameBuffer& sceneBuffer)

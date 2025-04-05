@@ -1,6 +1,10 @@
-[submodule "thirdparty/glm"]
-	path = thirdparty/glm
-	url = https://github.com/g-truc/glm
 [submodule "thirdparty/glfw"]
 	path = thirdparty/glfw
-	url = https://github.com/glfw/glfw
+	url = https://github.com/triofyx/glfw
+[submodule "thirdparty/glm"]
+	path = thirdparty/glm
+	url = https://github.com/triofyx/glm
+[submodule "thirdparty/imgui/imgui"]
+	path = thirdparty/imgui/imgui
+	url = https://github.com/triofyx/imgui.git
+	branch = docking

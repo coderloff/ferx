@@ -40,8 +40,8 @@ const config: Config = {
           sidebarPath: './sidebars.ts',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          // editUrl:
-          //   'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          editUrl:
+            'https://github.com/triofyx/ferx/tree/main/docs/',
         },
         blog: {
           showReadingTime: true,
@@ -51,8 +51,8 @@ const config: Config = {
           },
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          // editUrl:
-          //   'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          editUrl:
+            'https://github.com/triofyx/ferx/tree/main/docs/',
           // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
@@ -73,13 +73,14 @@ const config: Config = {
     },
     navbar: {
       title: 'Ferx Engine',
+      hideOnScroll: true,
       logo: {
         alt: 'Ferx Engine Logo',
         src: 'img/logo.svg',
         href: '/',
         width: 28,
         height: 28,
-        style: {margin: '0 2px 0 0'}
+        style: {margin: '0 12px 0 0'}
       },
       items: [
         {
@@ -91,8 +92,8 @@ const config: Config = {
         //{to: '/blog', label: 'Blog', position: 'left'},
         {
           href: 'https://github.com/triofyx/ferx',
-          label: 'GitHub',
           position: 'right',
+          className: "header-github-link",
         },
       ],
     },
